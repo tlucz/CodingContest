@@ -12,7 +12,7 @@ public class MagicCurrencyLevel3App {
 
     public static void main(String[] args) {
         CodingContestFileHelper codingContestFileHelper = new CodingContestFileHelper(MagicCurrencyLevel3App.class);
-        List<Path> inputFilesPaths = codingContestFileHelper.readInputFiles();
+        List<Path> inputFilesPaths = codingContestFileHelper.readInputFiles(false);
         for (var inputPath : inputFilesPaths) {
             List<String> inputLines = CodingContestFileHelper.readFile(inputPath);
             int currenciesNumber = ParserHelper.getNumbers(inputLines.getFirst()).getFirst().intValue();
@@ -20,11 +20,13 @@ public class MagicCurrencyLevel3App {
 
             List<String> outputLines = new ArrayList<>();
             for (int i = 0; i < currenciesNumber; i++) {
+                System.out.println(inputPath.toString()+" - Currency:" + (i+1) + "/" + currenciesNumber);
                 Currency currency = new Currency(
                         ParserHelper.getNumbers(inputLines.get(i + 2)).stream().map(d -> d.intValue()).map(v -> new Coin(v)).toList());
-                CoinDispenser dispenser = new CoinDispenser(currency);
+                BruteForceCoinDispenser dispenser = new BruteForceCoinDispenser(currency);
                 for (int amount = 1; amount <= 100; amount++) {
-                    String line=dispenser.dispense(amount);
+                    System.out.println(amount);
+                    String line = dispenser.dispense(amount);
                     outputLines.add(line);
                 }
             }

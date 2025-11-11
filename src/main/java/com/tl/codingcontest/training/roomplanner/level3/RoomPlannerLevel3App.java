@@ -10,7 +10,7 @@ public class RoomPlannerLevel3App {
 
     public static void main(String[] args) {
         CodingContestFileHelper codingContestFileHelper = new CodingContestFileHelper(RoomPlannerLevel3App.class);
-        List<Path> inputFilesPaths = codingContestFileHelper.readInputFiles();
+        List<Path> inputFilesPaths = codingContestFileHelper.readInputFiles(false);
         for (var inputPath : inputFilesPaths) {
             List<String> inputLines = CodingContestFileHelper.readFile(inputPath);
             int roomsNumber = ParserHelper.getNumbers(inputLines.getFirst()).getFirst().intValue();

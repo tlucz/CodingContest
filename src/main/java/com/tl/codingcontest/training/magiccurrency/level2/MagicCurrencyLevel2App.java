@@ -12,7 +12,7 @@ public class MagicCurrencyLevel2App {
 
     public static void main(String[] args) {
         CodingContestFileHelper codingContestFileHelper = new CodingContestFileHelper(MagicCurrencyLevel2App.class);
-        List<Path> inputFilesPaths = codingContestFileHelper.readInputFiles();
+        List<Path> inputFilesPaths = codingContestFileHelper.readInputFiles(false);
         for (var inputPath : inputFilesPaths) {
             List<String> inputLines = CodingContestFileHelper.readFile(inputPath);
             int currenciesNumber = ParserHelper.getNumbers(inputLines.getFirst()).getFirst().intValue();

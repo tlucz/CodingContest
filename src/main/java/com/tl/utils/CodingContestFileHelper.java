@@ -8,7 +8,6 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.List;
 
 public class CodingContestFileHelper {
@@ -39,7 +38,7 @@ public class CodingContestFileHelper {
         }
     }
 
-    public List<Path> readInputFiles() {
+    public List<Path> readInputFiles(boolean onlyExample) {
         try {
             String resourceFolder = appClass
                     .getPackageName()
@@ -49,6 +48,7 @@ public class CodingContestFileHelper {
             Path path = Paths.get(resource.toURI());
             return Files.list(path)
                     .filter(Files::isRegularFile)
+                    .filter(p -> onlyExample == false || p.getFileName().toString().contains("example"))
                     .filter(p -> p.getFileName().toString().endsWith(".in"))
                     .map(Path::toAbsolutePath)
                     .toList();
@@ -56,6 +56,4 @@ public class CodingContestFileHelper {
             throw new RuntimeException(e);
         }
     }
-
-
 }

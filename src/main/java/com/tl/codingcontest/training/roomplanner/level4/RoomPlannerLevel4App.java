@@ -11,7 +11,7 @@ public class RoomPlannerLevel4App {
 
     public static void main(String[] args) {
         CodingContestFileHelper codingContestFileHelper = new CodingContestFileHelper(RoomPlannerLevel4App.class);
-        List<Path> inputFilesPaths = codingContestFileHelper.readInputFiles();
+        List<Path> inputFilesPaths = codingContestFileHelper.readInputFiles(false);
         for (var inputPath : inputFilesPaths) {
             List<String> inputLines = CodingContestFileHelper.readFile(inputPath);
             int roomsNumber = ParserHelper.getNumbers(inputLines.getFirst()).getFirst().intValue();

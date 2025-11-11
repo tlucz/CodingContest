@@ -34,8 +34,23 @@ public class CoinDispenser {
     }
 
     private int findNextCoin(int value) {
-        for (Integer sortedCoin : sortedCoins) {
-            if (sortedCoin <= value) {
+        for (int i = 0; i < sortedCoins.size(); i++) {
+            int sortedCoin = sortedCoins.get(i);
+            if (sortedCoin == value) {
+                return sortedCoin;
+            }
+            for (int j = i + 1; j < sortedCoins.size(); j++) {
+                if (sortedCoin + sortedCoins.get(j) == value) {
+                    return sortedCoin;
+                }
+            }
+
+            if(sortedCoin+sortedCoins.get(i+1)<value) {
+                return sortedCoin;
+            }
+
+            int rest = value - sortedCoin;
+            if (rest >= sortedCoin) {
                 return sortedCoin;
             }
         }
