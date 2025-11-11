@@ -25,7 +25,8 @@ public class RoomPlannerLevel4 {
 
     private boolean placeDeskHorizontallyWithSpace(int deskId) {
         var point = new Point2D(0, 0);
-        Optional<Point2D> foundPoint = map.getFirstPointWithValueSearchingHorizontally(point, 0);
+//        Optional<Point2D> foundPoint = map.getFirstPointWithValueSearchingHorizontally(point, 0);
+        Optional<Point2D> foundPoint = Optional.empty();
         if(foundPoint.isEmpty()) {
             return false;
         }
@@ -36,5 +37,6 @@ public class RoomPlannerLevel4 {
             map.setValues(deskPoints, deskId);
             return true;
         }
+        return true;
     }
 }

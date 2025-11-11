@@ -2,7 +2,6 @@ package com.tl.utils.map2d;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 @SuppressWarnings("unchecked")
@@ -86,6 +85,15 @@ public class Map2D<T> {
         ).filter(this::isPointInside).toList();
     }
 
+    public List<Point2D> getNeighbors4(Point2D point) {
+        return Stream.of(
+                point.add(-1, 0),
+                point.add(0, -1),
+                point.add(0, 1),
+                point.add(1, 0)
+        ).filter(this::isPointInside).toList();
+    }
+
     public List<Point2D> getNeighbors8(List<Point2D> points) {
         return points.stream()
                 .flatMap(p -> getNeighbors8(p).stream())
@@ -94,6 +102,6 @@ public class Map2D<T> {
     }
 
     public void setValues(List<Point2D> points, T value) {
-        points.forEach(p->setValue(p, value));
+        points.forEach(p -> setValue(p, value));
     }
 }
