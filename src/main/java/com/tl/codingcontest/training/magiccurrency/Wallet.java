@@ -9,8 +9,8 @@ public record Wallet(Map<Integer, Integer> coins) implements Comparable<Wallet> 
     @Override
     public int compareTo(Wallet o) {
         int compareCoinsNumber = Integer.compare(coinsNumber(), o.coinsNumber());
-        if(compareCoinsNumber==0) {
-            return Integer.compare(o.sum(),sum());
+        if (compareCoinsNumber == 0) {
+            return Integer.compare(o.sum(), sum());
         }
         return compareCoinsNumber;
     }
@@ -24,7 +24,9 @@ public record Wallet(Map<Integer, Integer> coins) implements Comparable<Wallet> 
     }
 
     public String display() {
-        return coins.entrySet().stream().map(entry -> entry.getValue() + "x" + entry.getKey()).collect(Collectors.joining(" "));
+        return coins.entrySet().stream()
+                .filter(entry -> entry.getValue() > 0)
+                .map(entry -> entry.getValue() + "x" + entry.getKey()).collect(Collectors.joining(" "));
     }
 
     public Wallet add(Integer coin) {
@@ -35,5 +37,11 @@ public record Wallet(Map<Integer, Integer> coins) implements Comparable<Wallet> 
             newCoins.put(coin, newCoins.get(coin) + 1);
         }
         return new Wallet(newCoins);
+    }
+
+    public void add(Wallet otherWallet) {
+        otherWallet.coins().forEach(
+                (k, v) -> coins.merge(k, v, Integer::sum)
+        );
     }
 }
