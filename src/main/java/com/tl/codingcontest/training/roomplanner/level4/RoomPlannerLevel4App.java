@@ -14,10 +14,10 @@ public class RoomPlannerLevel4App {
         List<Path> inputFilesPaths = codingContestFileHelper.readInputFiles(false);
         for (var inputPath : inputFilesPaths) {
             List<String> inputLines = CodingContestFileHelper.readFile(inputPath);
-            int roomsNumber = ParserHelper.getNumbers(inputLines.getFirst()).getFirst().intValue();
+            int roomsNumber = ParserHelper.getDoubles(inputLines.getFirst()).getFirst().intValue();
             List<String> outputLines = new ArrayList<>();
             for (int i = 0; i < roomsNumber; i++) {
-                List<Double> sizes = ParserHelper.getNumbers(inputLines.get(i + 1));
+                List<Double> sizes = ParserHelper.getDoubles(inputLines.get(i + 1));
                 int xSize = sizes.get(0).intValue();
                 int ySize = sizes.get(1).intValue();
                 int deskAmount = sizes.get(2).intValue();

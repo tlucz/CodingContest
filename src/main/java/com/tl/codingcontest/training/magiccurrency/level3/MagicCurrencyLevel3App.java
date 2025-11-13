@@ -15,14 +15,14 @@ public class MagicCurrencyLevel3App {
         List<Path> inputFilesPaths = codingContestFileHelper.readInputFiles(false);
         for (var inputPath : inputFilesPaths) {
             List<String> inputLines = CodingContestFileHelper.readFile(inputPath);
-            int currenciesNumber = ParserHelper.getNumbers(inputLines.getFirst()).getFirst().intValue();
-            int coinsNumber = ParserHelper.getNumbers(inputLines.get(1)).getFirst().intValue();
+            int currenciesNumber = ParserHelper.getDoubles(inputLines.getFirst()).getFirst().intValue();
+            int coinsNumber = ParserHelper.getDoubles(inputLines.get(1)).getFirst().intValue();
 
             List<String> outputLines = new ArrayList<>();
             for (int i = 0; i < currenciesNumber; i++) {
                 System.out.println(inputPath.toString()+" - Currency:" + (i+1) + "/" + currenciesNumber);
                 Currency currency = new Currency(
-                        ParserHelper.getNumbers(inputLines.get(i + 2)).stream().map(d -> d.intValue()).map(v -> new Coin(v)).toList());
+                        ParserHelper.getDoubles(inputLines.get(i + 2)).stream().map(d -> d.intValue()).map(v -> new Coin(v)).toList());
                 BruteForceCoinDispenser dispenser = new BruteForceCoinDispenser(currency);
                 for (int amount = 1; amount <= 100; amount++) {
                     System.out.println(amount);

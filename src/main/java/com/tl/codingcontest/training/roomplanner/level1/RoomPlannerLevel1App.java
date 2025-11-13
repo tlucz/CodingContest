@@ -13,10 +13,10 @@ public class RoomPlannerLevel1App {
         List<Path> inputFilesPaths = codingContestFileHelper.readInputFiles(false);
         for (var inputPath : inputFilesPaths) {
             List<String> inputLines = CodingContestFileHelper.readFile(inputPath);
-            int roomsNumber = ParserHelper.getNumbers(inputLines.getFirst()).getFirst().intValue();
+            int roomsNumber = ParserHelper.getDoubles(inputLines.getFirst()).getFirst().intValue();
             List<String> outputLines = new ArrayList<>();
             for (int i = 0; i < roomsNumber; i++) {
-                List<Double> sizes = ParserHelper.getNumbers(inputLines.get(i + 1));
+                List<Double> sizes = ParserHelper.getDoubles(inputLines.get(i + 1));
                 RoomPlannerLevel1 roomPlannerLevel1 = new RoomPlannerLevel1(sizes.get(0).intValue(), sizes.get(1).intValue());
                 int calculated = roomPlannerLevel1.calculatePossibleDesks();
                 outputLines.add(String.valueOf(calculated));

@@ -15,12 +15,12 @@ public class MagicCurrencyLevel1App {
         List<Path> inputFilesPaths = codingContestFileHelper.readInputFiles(false);
         for (var inputPath : inputFilesPaths) {
             List<String> inputLines = CodingContestFileHelper.readFile(inputPath);
-            int currenciesNumber = ParserHelper.getNumbers(inputLines.getFirst()).getFirst().intValue();
-            int coinsNumber = ParserHelper.getNumbers(inputLines.get(1)).getFirst().intValue();
+            int currenciesNumber = ParserHelper.getDoubles(inputLines.getFirst()).getFirst().intValue();
+            int coinsNumber = ParserHelper.getDoubles(inputLines.get(1)).getFirst().intValue();
 
             List<String> outputLines = new ArrayList<>();
             for (int i = 0; i < currenciesNumber; i++) {
-                Currency currency = new Currency(ParserHelper.getNumbers(inputLines.get(i + 2)).stream().map(d -> d.intValue()).map(v->new Coin(v)).toList());
+                Currency currency = new Currency(ParserHelper.getDoubles(inputLines.get(i + 2)).stream().map(d -> d.intValue()).map(v->new Coin(v)).toList());
                 Coin min = new Coin(1);
                 while (true) {
                     if (!currency.coins().contains(min)) {

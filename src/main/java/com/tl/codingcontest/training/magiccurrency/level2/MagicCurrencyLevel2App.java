@@ -15,15 +15,15 @@ public class MagicCurrencyLevel2App {
         List<Path> inputFilesPaths = codingContestFileHelper.readInputFiles(false);
         for (var inputPath : inputFilesPaths) {
             List<String> inputLines = CodingContestFileHelper.readFile(inputPath);
-            int currenciesNumber = ParserHelper.getNumbers(inputLines.getFirst()).getFirst().intValue();
-            int coinsNumber = ParserHelper.getNumbers(inputLines.get(1)).getFirst().intValue();
-            int amountsNumber = ParserHelper.getNumbers(inputLines.get(2)).getFirst().intValue();
+            int currenciesNumber = ParserHelper.getDoubles(inputLines.getFirst()).getFirst().intValue();
+            int coinsNumber = ParserHelper.getDoubles(inputLines.get(1)).getFirst().intValue();
+            int amountsNumber = ParserHelper.getDoubles(inputLines.get(2)).getFirst().intValue();
 
             List<String> outputLines = new ArrayList<>();
             for (int i = 0; i < currenciesNumber; i++) {
                 Currency currency = new Currency(
-                        ParserHelper.getNumbers(inputLines.get(i * 2 + 3)).stream().map(d -> d.intValue()).map(v -> new Coin(v)).toList());
-                List<Integer> amounts = ParserHelper.getNumbers(inputLines.get(i * 2 + 4)).stream().map(d -> d.intValue()).toList();
+                        ParserHelper.getDoubles(inputLines.get(i * 2 + 3)).stream().map(d -> d.intValue()).map(v -> new Coin(v)).toList());
+                List<Integer> amounts = ParserHelper.getDoubles(inputLines.get(i * 2 + 4)).stream().map(d -> d.intValue()).toList();
 
                 for (int amount : amounts) {
                     outputLines.add(find(amount, currency));
