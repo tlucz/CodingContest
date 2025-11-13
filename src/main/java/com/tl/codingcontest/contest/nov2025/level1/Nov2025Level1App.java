@@ -36,10 +36,10 @@ public class Nov2025Level1App {
                         .map(d -> d.intValue())
                         .toList();
 
-                Level1Dispenser dispenser = new Level1Dispenser(currency);
+                Level1Dispenser dispenser = new Level1Dispenser();
                 for (int amount : amounts) {
                     System.out.println(inputPath.toString() + " - Currency:" + (i + 1) + "/" + currenciesNumber + " Amount:" + amount);
-                    String dispenseLine = dispenser.dispense(amount).get().display();
+                    String dispenseLine = dispenser.run();
                     System.out.println(dispenseLine);
                     outputLines.add(dispenseLine);
                 }
