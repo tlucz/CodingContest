@@ -30,7 +30,7 @@ public class CodingContestFileHelper {
         try {
             Path path = Path.of(inputPath.toString()
                     .replace("input", "output")
-                    .replace(".in", ".out"));
+                    .replace(".in", ".calc.out"));
             Files.createDirectories(path.getParent());
             Files.write(path, outputLines, CREATE, TRUNCATE_EXISTING);
         } catch (IOException e) {
