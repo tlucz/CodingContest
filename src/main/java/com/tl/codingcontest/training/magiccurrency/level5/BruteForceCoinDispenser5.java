@@ -77,13 +77,23 @@ public class BruteForceCoinDispenser5 {
 
     private boolean canBeBetter(Wallet bestWallet, int nobc, int rest, List<Integer> availableCoins) {
         int best = bestWallet.coinsNumber();
-        double restInSecondCoin = Math.ceil((double) rest / availableCoins.get(1));
-        var bestPossible = nobc + restInSecondCoin;
 
-        return bestPossible < best && maxSum(availableCoins)>=rest;
+        double bestPossible = nobc;
+        for (int idx = 1; idx < availableCoins.size(); idx++) {
+            Integer nextCoinValue = availableCoins.get(idx);
+            double restInNextCoins = Math.ceil((double) rest / nextCoinValue);
+            double usedNextCoins = Math.min(possibleCoins.get(nextCoinValue), restInNextCoins);
+            bestPossible += usedNextCoins;
+            rest-=usedNextCoins*nextCoinValue;
+            if(rest<=0) {
+                break;
+            }
+        }
+
+        return bestPossible < best && rest<=0;
     }
 
     private int maxSum(List<Integer> availableCoins) {
-        return availableCoins.stream().mapToInt(c->c* possibleCoins.get(c)).sum();
+        return availableCoins.stream().mapToInt(c -> c * possibleCoins.get(c)).sum();
     }
 }
