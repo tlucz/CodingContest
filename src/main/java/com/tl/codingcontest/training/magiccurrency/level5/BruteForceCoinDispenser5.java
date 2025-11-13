@@ -27,7 +27,8 @@ public class BruteForceCoinDispenser5 {
     }
 
     public Optional<Wallet> dispense(int amount) {
-        return cachedDispense(new DispenseData(amount, sortedCoins));
+        Optional<Wallet> wallet = cachedDispense(new DispenseData(amount, sortedCoins));
+        return wallet;
     }
 
     private Optional<Wallet> cachedDispense(DispenseData dispenseData) {
