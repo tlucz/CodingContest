@@ -10,6 +10,9 @@ public class Spaceship {
     int directionModifier = 1;
 
     public List<Integer> travelTo(Integer targetPosition){
+        if (targetPosition == 0){
+            return List.of();
+        }
         currentPosition = 0;
         currentPace = new Pace(0);
         List<Integer> paces = new ArrayList<>();
