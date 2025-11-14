@@ -32,43 +32,65 @@ public class Nov2025Level6App {
                 int asteroidX = asteroidNumbers.get(0);
                 int asteroidY = asteroidNumbers.get(1);
                 Asteroid asteroid = new Asteroid(asteroidX, asteroidY, 2);
-
-                System.out.println("From (0,0) to ("+travelToX+","+travelToY+"), asteroid ("+asteroidX+","+asteroidY+")");
+                System.out.println("From (0,0) to (" + travelToX + "," + travelToY + "), asteroid (" + asteroidX + "," + asteroidY + ")");
 
                 RoutePlanner routePlanner = new RoutePlanner(asteroid, travelToX, travelToY);
-
+                PacesDecomposer pacesDecomposer = new PacesDecomposer();
                 List<Point> plan = new ArrayList<>();
-                for (int planIdx = 0; planIdx < 20; planIdx++) {
 
+                while (true) {
                     plan = routePlanner.nextPlan();
                     String planTxt = plan.stream()
                             .map(point -> "(" + point.getX() + "," + point.getY() + ")")
                             .collect(Collectors.joining(" "));
-
                     System.out.println("Plan: " + planTxt);
+
+                    PlanExecutor planExecutor = new PlanExecutor();
+
+                    // first execution
+                    List<List<Integer>> paces = planExecutor.execute(plan);
+                    List<Point> travelPoints = pacesDecomposer.decompose(paces);
+                    boolean collision = CollisionChecker.isCollision(travelPoints, asteroid);
+                    if (!collision) {
+                        List<Integer> pacesX = paces.get(0);
+                        List<Integer> pacesY = paces.get(1);
+                        System.out.println(pacesX);
+                        System.out.println(pacesY);
+                        if (planExecutor.time(pacesX) > maxTime) {
+                            throw new IllegalStateException("too much time spent. Time:" + planExecutor.time(pacesX) + ", " + "maxTime:" + maxTime);
+                        }
+                        outputLines.add(pacesX.stream()
+                                .map(integer -> Integer.toString(integer))
+                                .collect(Collectors.joining(" ")));
+                        outputLines.add(pacesY.stream()
+                                .map(integer -> Integer.toString(integer))
+                                .collect(Collectors.joining(" ")));
+                        outputLines.add("");
+                        break;
+                    }
+
+                    // second execution
+                    paces = planExecutor.execute(plan);
+                    travelPoints = pacesDecomposer.decompose(paces);
+                    collision = CollisionChecker.isCollision(travelPoints, asteroid);
+                    if (!collision) {
+                        List<Integer> pacesX = paces.get(0);
+                        List<Integer> pacesY = paces.get(1);
+                        System.out.println(pacesX);
+                        System.out.println(pacesY);
+                        if (planExecutor.time(pacesX) > maxTime) {
+                            throw new IllegalStateException("too much time spent. Time:" + planExecutor.time(pacesX) + ", " + "maxTime:" + maxTime);
+                        }
+                        outputLines.add(pacesX.stream()
+                                .map(integer -> Integer.toString(integer))
+                                .collect(Collectors.joining(" ")));
+                        outputLines.add(pacesY.stream()
+                                .map(integer -> Integer.toString(integer))
+                                .collect(Collectors.joining(" ")));
+                        outputLines.add("");
+                        break;
+                    }
                 }
-
-                System.exit(0);
-                PlanExecutor planExecutor = new PlanExecutor();
-                List<List<Integer>> paces = planExecutor.execute(plan);
-
-                List<Integer> pacesX = paces.get(0);
-                List<Integer> pacesY = paces.get(1);
-                System.out.println(pacesX);
-                System.out.println(pacesY);
-                if (planExecutor.time(pacesX)> maxTime){
-                    throw new IllegalStateException("too much time spent. Time:"+planExecutor.time(pacesX)+", "+"maxTime:"+maxTime);
-                }
-
-
-                outputLines.add(pacesX.stream()
-                        .map(integer -> Integer.toString(integer))
-                        .collect(Collectors.joining(" ")));
-                outputLines.add(pacesY.stream()
-                        .map(integer -> Integer.toString(integer))
-                        .collect(Collectors.joining(" ")));
-                outputLines.add("");
-
             }
             CodingContestFileHelper.saveOutputFile(inputPath, outputLines);
         }
