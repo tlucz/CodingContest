@@ -3,9 +3,11 @@ package com.tl.codingcontest.contest.nov2025.level3;
 import com.tl.utils.CodingContestFileHelper;
 import com.tl.utils.ParserHelper;
 import com.tl.utils.StringIteration;
+
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Nov2025Level3App {
 
@@ -25,9 +27,12 @@ public class Nov2025Level3App {
                 List<Integer> numbers = ParserHelper.getInts(stringIteration.getNext());
                 int travelTo = numbers.get(0);
                 int maxAvailable = numbers.get(1);
+                List<Integer> paces = new Spaceship().travelTo(travelTo);
 
                 //TODO:
-                outputLines.add(String.valueOf(""));
+                outputLines.add(paces.stream()
+                        .map(integer -> Integer.toString(integer))
+                        .collect(Collectors.joining(" ")));
 
             }
             CodingContestFileHelper.saveOutputFile(inputPath, outputLines);
