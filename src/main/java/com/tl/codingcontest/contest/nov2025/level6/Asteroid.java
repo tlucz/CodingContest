@@ -1,6 +1,7 @@
 package com.tl.codingcontest.contest.nov2025.level6;
 
 public class Asteroid {
+
     private final int x;
     private final int y;
     private final int radius;
@@ -33,5 +34,10 @@ public class Asteroid {
 
     public boolean inYRange(int y) {
         return y >= this.y - radius && y <= this.y + radius;
+    }
+
+    public boolean isPointInside(int x, int y) {
+        return x <= this.x + this.radius && x >= this.x - this.radius &&
+                y <= this.y + this.radius && y >= this.y - this.radius;
     }
 }
