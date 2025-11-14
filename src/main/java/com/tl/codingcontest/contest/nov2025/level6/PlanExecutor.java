@@ -9,10 +9,8 @@ public class PlanExecutor {
     public static void main(String[] args) {
         List<List<Integer>> paces = new PlanExecutor().execute(List.of(
                 new Point(0, 0),
-                new Point(0, 3),
-                new Point(6, 3),
-                new Point(6, 0)
-        ));
+                new Point(6, 1)
+        ), false);
         System.out.println(paces.get(0).size());
         System.out.println(paces.get(1).size());
         System.out.println(paces);
@@ -21,6 +19,10 @@ public class PlanExecutor {
     }
 
     public List<List<Integer>> execute(List<Point> points) {
+        return execute(points, false);
+    }
+
+    public List<List<Integer>> execute(List<Point> points, boolean reverse) {
         Spaceship spaceship = new Spaceship();
         List<Integer> pacesX = new ArrayList<>();
         List<Integer> pacesY = new ArrayList<>();
@@ -38,18 +40,25 @@ public class PlanExecutor {
             pacesY.addAll(travelPacesY);
             int xTime = time(travelPacesX);
             int yTime = time(travelPacesY);
-            if (!end){
-                for (int x = xTime; x < yTime; x++) {
+            for (int x = xTime; x < yTime; x++) {
+                if (reverse) {
+                    pacesX.add(pacesX.size() - travelPacesX.size(), 0);
+                } else {
                     pacesX.add(0);
                 }
-                for (int y = yTime; y < xTime; y++) {
+            }
+            for (int y = yTime; y < xTime; y++) {
+                if (reverse) {
+                    pacesY.add(pacesY.size() - travelPacesY.size(), 0);
+                } else {
                     pacesY.add(0);
                 }
-            } else {
-                if (!pacesX.isEmpty() && pacesX.getLast() != 0){
+            }
+            if (end) {
+                if (!pacesX.isEmpty() && pacesX.getLast() != 0) {
                     pacesX.add(0);
                 }
-                if (!pacesY.isEmpty() && pacesY.getLast() != 0){
+                if (!pacesY.isEmpty() && pacesY.getLast() != 0) {
                     pacesY.add(0);
                 }
             }

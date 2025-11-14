@@ -8,10 +8,8 @@ public class PacesDecomposer {
     public static void main(String[] args) {
         List<List<Integer>> paces = new PlanExecutor().execute(List.of(
                 new Point(0, 0),
-                new Point(0, 3),
-                new Point(6, 3),
-                new Point(6, 0)
-        ));
+                new Point(6, 1)
+        ), true);
         PacesDecomposer decomposer = new PacesDecomposer();
         List<Point> points = decomposer.decompose(paces);
         System.out.println(points);
