@@ -35,7 +35,7 @@ public class Nov2025Level6App {
 
                 System.out.println("From (0,0) to ("+travelToX+","+travelToY+"), asteroid ("+asteroidX+","+asteroidY+")");
 
-                RoutePlanner routePlanner = new RoutePlanner(new Asteroid(asteroidX, asteroidY, 2), travelToX, travelToY);
+                RoutePlanner routePlanner = new RoutePlanner(asteroid, travelToX, travelToY);
 
                 List<Point> plan = new ArrayList<>();
                 for (int planIdx = 0; planIdx < 20; planIdx++) {
