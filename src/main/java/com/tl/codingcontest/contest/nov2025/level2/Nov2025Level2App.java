@@ -23,9 +23,20 @@ public class Nov2025Level2App {
 
             for (int i = 0; i < sequencesNumber; i++) {
                 List<Integer> paces = ParserHelper.getInts(stringIteration.getNext());
-                int sum = paces.stream().mapToInt(x -> x).sum();
-                outputLines.add(String.valueOf(sum));
 
+                int distance = paces.stream()
+                        .mapToInt(x -> x)
+                        .map(operand -> Math.min(operand, 1))
+                        .map(operand -> Math.max(operand, -1))
+                        .sum();
+                int time = paces.stream()
+                        .mapToInt(x -> x)
+                        .map(operand -> Math.abs(operand))
+                        .map(operand -> Math.max(operand, 1))
+                        .sum();
+
+
+                outputLines.add(distance + " " + time);
             }
             CodingContestFileHelper.saveOutputFile(inputPath, outputLines);
         }
