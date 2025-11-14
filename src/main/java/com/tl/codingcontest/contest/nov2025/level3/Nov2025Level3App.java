@@ -22,9 +22,12 @@ public class Nov2025Level3App {
             List<String> outputLines = new ArrayList<>();
 
             for (int i = 0; i < sequencesNumber; i++) {
-                List<Integer> paces = ParserHelper.getInts(stringIteration.getNext());
-                int sum = paces.stream().mapToInt(x -> x).sum();
-                outputLines.add(String.valueOf(sum));
+                List<Integer> numbers = ParserHelper.getInts(stringIteration.getNext());
+                int travelTo = numbers.get(0);
+                int maxAvailable = numbers.get(1);
+
+                //TODO:
+                outputLines.add(String.valueOf(""));
 
             }
             CodingContestFileHelper.saveOutputFile(inputPath, outputLines);
