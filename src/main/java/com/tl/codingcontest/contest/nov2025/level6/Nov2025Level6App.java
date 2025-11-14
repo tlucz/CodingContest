@@ -12,7 +12,7 @@ public class Nov2025Level6App {
 
     public static void main(String[] args) {
         CodingContestFileHelper codingContestFileHelper = new CodingContestFileHelper(Nov2025Level6App.class);
-        List<Path> inputFilesPaths = codingContestFileHelper.readInputFiles(false);
+        List<Path> inputFilesPaths = codingContestFileHelper.readInputFiles(true);
 
         for (var inputPath : inputFilesPaths) {
 
@@ -70,26 +70,26 @@ public class Nov2025Level6App {
                     }
 
                     // second execution
-                    paces = planExecutor.execute(plan);
-                    travelPoints = pacesDecomposer.decompose(paces);
-                    collision = CollisionChecker.isCollision(travelPoints, asteroid);
-                    if (!collision) {
-                        List<Integer> pacesX = paces.get(0);
-                        List<Integer> pacesY = paces.get(1);
-                        System.out.println(pacesX);
-                        System.out.println(pacesY);
-                        if (planExecutor.time(pacesX) > maxTime) {
-                            throw new IllegalStateException("too much time spent. Time:" + planExecutor.time(pacesX) + ", " + "maxTime:" + maxTime);
-                        }
-                        outputLines.add(pacesX.stream()
-                                .map(integer -> Integer.toString(integer))
-                                .collect(Collectors.joining(" ")));
-                        outputLines.add(pacesY.stream()
-                                .map(integer -> Integer.toString(integer))
-                                .collect(Collectors.joining(" ")));
-                        outputLines.add("");
-                        break;
-                    }
+//                    paces = planExecutor.execute(plan);
+//                    travelPoints = pacesDecomposer.decompose(paces);
+//                    collision = CollisionChecker.isCollision(travelPoints, asteroid);
+//                    if (!collision) {
+//                        List<Integer> pacesX = paces.get(0);
+//                        List<Integer> pacesY = paces.get(1);
+//                        System.out.println(pacesX);
+//                        System.out.println(pacesY);
+//                        if (planExecutor.time(pacesX) > maxTime) {
+//                            throw new IllegalStateException("too much time spent. Time:" + planExecutor.time(pacesX) + ", " + "maxTime:" + maxTime);
+//                        }
+//                        outputLines.add(pacesX.stream()
+//                                .map(integer -> Integer.toString(integer))
+//                                .collect(Collectors.joining(" ")));
+//                        outputLines.add(pacesY.stream()
+//                                .map(integer -> Integer.toString(integer))
+//                                .collect(Collectors.joining(" ")));
+//                        outputLines.add("");
+//                        break;
+//                    }
                 }
             }
             CodingContestFileHelper.saveOutputFile(inputPath, outputLines);
