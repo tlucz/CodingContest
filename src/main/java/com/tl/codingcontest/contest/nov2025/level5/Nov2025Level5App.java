@@ -13,7 +13,7 @@ public class Nov2025Level5App {
 
     public static void main(String[] args) {
         CodingContestFileHelper codingContestFileHelper = new CodingContestFileHelper(Nov2025Level5App.class);
-        List<Path> inputFilesPaths = codingContestFileHelper.readInputFiles(true);
+        List<Path> inputFilesPaths = codingContestFileHelper.readInputFiles(false);
 
         for (var inputPath : inputFilesPaths) {
 
@@ -27,7 +27,7 @@ public class Nov2025Level5App {
                 List<Integer> numbers = ParserHelper.getInts(stringIteration.getNext().replace(",", " "));
                 int travelToX = numbers.get(0);
                 int travelToY = numbers.get(1);
-                int maxAvailable = numbers.get(2);
+                int maxTime = numbers.get(2);
 
                 List<Integer> asteroidNumbers = ParserHelper.getInts(stringIteration.getNext().replace(",", " "));
                 int asteroidX = asteroidNumbers.get(0);
@@ -43,9 +43,16 @@ public class Nov2025Level5App {
                         .collect(Collectors.joining(" "));
                 System.out.println("Plan: "+planTxt);
 
-                Spaceship spaceship = new Spaceship();
-                List<Integer> pacesX = spaceship.travelTo(travelToX);
-                List<Integer> pacesY = spaceship.travelTo(travelToY);
+
+                PlanExecutor planExecutor = new PlanExecutor();
+                List<List<Integer>> paces = planExecutor.execute(plan);
+
+                List<Integer> pacesX = paces.get(0);
+                List<Integer> pacesY = paces.get(1);
+
+                if (planExecutor.time(pacesX)> maxTime){
+                    throw new IllegalStateException("too much time spent");
+                }
 
 
                 outputLines.add(pacesX.stream()

@@ -47,7 +47,7 @@ public class PlanExecutor {
         return List.of(pacesX, pacesY);
     }
 
-    private int time(List<Integer> paces){
+    public int time(List<Integer> paces){
         return paces.stream()
                 .mapToInt(x -> x)
                 .map(operand -> Math.abs(operand))
