@@ -46,10 +46,10 @@ public class PlanExecutor {
                     pacesY.add(0);
                 }
             } else {
-                if (pacesX.getLast() != 0){
+                if (!pacesX.isEmpty() && pacesX.getLast() != 0){
                     pacesX.add(0);
                 }
-                if (pacesY.getLast() != 0){
+                if (!pacesY.isEmpty() && pacesY.getLast() != 0){
                     pacesY.add(0);
                 }
             }
