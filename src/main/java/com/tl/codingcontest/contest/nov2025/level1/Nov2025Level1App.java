@@ -19,30 +19,15 @@ public class Nov2025Level1App {
 
             var stringIteration = new StringIteration(CodingContestFileHelper.readFile(inputPath));
 
-            int currenciesNumber = ParserHelper.getDoubles(stringIteration.getNext()).getFirst().intValue();
-            int coinsNumber = ParserHelper.getDoubles(stringIteration.getNext()).getFirst().intValue();
-            stringIteration.getNext();
+            int sequencesNumber = ParserHelper.getDoubles(stringIteration.getNext()).getFirst().intValue();
 
             List<String> outputLines = new ArrayList<>();
 
-            for (int i = 0; i < currenciesNumber; i++) {
-                Currency currency = new Currency(
-                        ParserHelper.getDoubles(stringIteration.getNext())
-                                .stream()
-                                .map(d -> d.intValue())
-                                .map(v -> new Coin(v)).toList());
-                List<Integer> amounts = ParserHelper.getDoubles(stringIteration.getNext())
-                        .stream()
-                        .map(d -> d.intValue())
-                        .toList();
+            for (int i = 0; i < sequencesNumber; i++) {
+                List<Integer> paces = ParserHelper.getInts(stringIteration.getNext());
+                int sum = paces.stream().mapToInt(x -> x).sum();
+                outputLines.add(String.valueOf(sum));
 
-                Level1Dispenser dispenser = new Level1Dispenser();
-                for (int amount : amounts) {
-                    System.out.println(inputPath.toString() + " - Currency:" + (i + 1) + "/" + currenciesNumber + " Amount:" + amount);
-                    String dispenseLine = dispenser.run();
-                    System.out.println(dispenseLine);
-                    outputLines.add(dispenseLine);
-                }
             }
             CodingContestFileHelper.saveOutputFile(inputPath, outputLines);
         }
