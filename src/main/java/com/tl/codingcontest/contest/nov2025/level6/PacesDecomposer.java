@@ -5,7 +5,7 @@ import java.util.List;
 
 public class PacesDecomposer {
 
-    public List<Point> decompose(List<Pace> paces){
+    public List<Point> decompose(List<List<Integer>> paces){
 
         return Collections.emptyList();
     }
