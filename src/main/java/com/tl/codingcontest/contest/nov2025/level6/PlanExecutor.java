@@ -30,24 +30,46 @@ public class PlanExecutor {
             int relativeXEnd = endPoint.getX() - startPoint.getX();
             int relativeYEnd = endPoint.getY() - startPoint.getY();
 
-            List<Integer> travelPacesX = spaceship.travelTo(relativeXEnd);
+            boolean start = i == 0;
+            boolean end = i == points.size() - 2;
+            List<Integer> travelPacesX = travel(spaceship, relativeXEnd, start, end);
             pacesX.addAll(travelPacesX);
-            List<Integer> travelPacesY = spaceship.travelTo(relativeYEnd);
+            List<Integer> travelPacesY = travel(spaceship, relativeYEnd, start, end);
             pacesY.addAll(travelPacesY);
             int xTime = time(travelPacesX);
             int yTime = time(travelPacesY);
-            for (int x = xTime; x < yTime; x++) {
-                pacesX.add(0);
-            }
-            for (int y = yTime; y < xTime; y++) {
-                pacesY.add(0);
+            if (!end){
+                for (int x = xTime; x < yTime; x++) {
+                    pacesX.add(0);
+                }
+                for (int y = yTime; y < xTime; y++) {
+                    pacesY.add(0);
+                }
+            } else {
+                if (pacesX.getLast() != 0){
+                    pacesX.add(0);
+                }
+                if (pacesY.getLast() != 0){
+                    pacesY.add(0);
+                }
             }
         }
 
         return List.of(pacesX, pacesY);
     }
 
-    public int time(List<Integer> paces){
+    private static List<Integer> travel(Spaceship spaceship, int target, boolean start, boolean end) {
+        List<Integer> integers = spaceship.travelTo(target);
+        if (!start && !integers.isEmpty()) {
+            integers.removeFirst();
+        }
+        if (!end && !integers.isEmpty()) {
+            integers.removeLast();
+        }
+        return integers;
+    }
+
+    public int time(List<Integer> paces) {
         return paces.stream()
                 .mapToInt(x -> x)
                 .map(operand -> Math.abs(operand))
