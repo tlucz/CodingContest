@@ -20,15 +20,15 @@ public class RoutePlanner {
         points.add(new Point(0, 0));
         int currentX = 0;
         int currentY = 0;
-        if (asteroid.inYRange(0)) {
-            currentY = asteroid.getRadius() + 1;
+        if (asteroid.inYRange(0) || asteroid.inYRange(finalY)) {
+            currentY = asteroid.getY() + asteroid.getRadius() + 1;
             points.add(new Point(0, currentY));
             points.add(new Point(finalX, currentY));
             points.add(new Point(finalX, finalY));
             return points;
         }
-        if (asteroid.inXRange(0)) {
-            currentX = asteroid.getRadius() + 1;
+        if (asteroid.inXRange(0) || asteroid.inXRange(finalX)) {
+            currentX = asteroid.getX() + asteroid.getRadius() + 1;
             points.add(new Point(currentX, 0));
             points.add(new Point(currentX, finalY));
             points.add(new Point(finalX, finalY));
