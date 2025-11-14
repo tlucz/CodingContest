@@ -1,13 +1,14 @@
 package com.tl.codingcontest.contest.nov2025.level6;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RoutePlanner {
 
+    final List<Point> directions = List.of(new Point(-1, 0), new Point(1, 0), new Point(0, -1), new Point(0, 1));
     private final Asteroid asteroid;
     private final int finalX;
     private final int finalY;
+    int planNumber = 0;
 
     public RoutePlanner(Asteroid asteroid, int finalX, int finalY) {
         this.asteroid = asteroid;
@@ -15,28 +16,22 @@ public class RoutePlanner {
         this.finalY = finalY;
     }
 
-    public List<Point> plan() {
-        List<Point> points = new ArrayList<>();
-        points.add(new Point(0, 0));
-        int currentX = 0;
-        int currentY = 0;
-        if (asteroid.inYRange(0) || asteroid.inYRange(finalY)) {
-            currentY = asteroid.getY() + asteroid.getRadius() + 1;
-            points.add(new Point(0, currentY));
-            points.add(new Point(finalX, currentY));
-            points.add(new Point(finalX, finalY));
-            return points;
+    public List<Point> nextPlan() {
+        List<Point> retVal;
+        if (planNumber == 0) {
+            retVal = List.of(new Point(0, 0), new Point(finalX, finalY));
+        } else {
+            int movement = ((planNumber - 1) / 4) + 1;
+            int direction = (planNumber - 1) % 4;
+            Point directionPoint = directions.get(direction);
+            Point tempPoint = new Point(directionPoint.getX() * movement, directionPoint.getY() * movement);
+            retVal = List.of(
+                    new Point(0, 0),
+                    tempPoint,
+                    new Point(finalX, finalY)
+            );
         }
-        if (asteroid.inXRange(0) || asteroid.inXRange(finalX)) {
-            currentX = asteroid.getX() + asteroid.getRadius() + 1;
-            points.add(new Point(currentX, 0));
-            points.add(new Point(currentX, finalY));
-            points.add(new Point(finalX, finalY));
-            return points;
-        }
-        points.add(new Point(0, finalY));
-        points.add(new Point(finalX, finalY));
-
-        return points;
+        planNumber++;
+        return retVal;
     }
 }

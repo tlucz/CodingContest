@@ -36,13 +36,19 @@ public class Nov2025Level6App {
                 System.out.println("From (0,0) to ("+travelToX+","+travelToY+"), asteroid ("+asteroidX+","+asteroidY+")");
 
                 RoutePlanner routePlanner = new RoutePlanner(new Asteroid(asteroidX, asteroidY, 2), travelToX, travelToY);
-                List<Point> plan = routePlanner.plan();
-                String planTxt = plan.stream()
-                        .map(point -> "(" + point.getX() + "," + point.getY() + ")")
-                        .collect(Collectors.joining(" "));
-                System.out.println("Plan: "+planTxt);
 
+                List<Point> plan = new ArrayList<>();
+                for (int planIdx = 0; planIdx < 20; planIdx++) {
 
+                    plan = routePlanner.nextPlan();
+                    String planTxt = plan.stream()
+                            .map(point -> "(" + point.getX() + "," + point.getY() + ")")
+                            .collect(Collectors.joining(" "));
+
+                    System.out.println("Plan: " + planTxt);
+                }
+
+                System.exit(0);
                 PlanExecutor planExecutor = new PlanExecutor();
                 List<List<Integer>> paces = planExecutor.execute(plan);
 
