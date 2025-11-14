@@ -50,7 +50,7 @@ public class Nov2025Level6App {
                 List<Integer> pacesY = paces.get(1);
 
                 if (planExecutor.time(pacesX)> maxTime){
-                    throw new IllegalStateException("too much time spent");
+                    throw new IllegalStateException("too much time spent. Time:"+planExecutor.time(pacesX)+", "+"maxTime:"+maxTime);
                 }
 
 
