@@ -12,10 +12,10 @@ public class Nov2025Level6App {
 
     public static void main(String[] args) {
         CodingContestFileHelper codingContestFileHelper = new CodingContestFileHelper(Nov2025Level6App.class);
-        List<Path> inputFilesPaths = codingContestFileHelper.readInputFiles(true);
+        List<Path> inputFilesPaths = codingContestFileHelper.readInputFiles(false);
 
-        for (var inputPath : inputFilesPaths) {
-
+        for (Path inputPath : inputFilesPaths) {
+            System.out.println(inputPath.toString());
             var stringIteration = new StringIteration(CodingContestFileHelper.readFile(inputPath));
 
             int sequencesNumber = ParserHelper.getDoubles(stringIteration.getNext()).getFirst().intValue();
@@ -54,9 +54,9 @@ public class Nov2025Level6App {
                     if (!collision) {
                         List<Integer> pacesX = paces.get(0);
                         List<Integer> pacesY = paces.get(1);
-                        System.out.println(pacesX);
-                        System.out.println(pacesY);
                         if (planExecutor.time(pacesX) <= maxTime) {
+                            System.out.println(pacesX);
+                            System.out.println(pacesY);
                             outputLines.add(pacesX.stream()
                                     .map(integer -> Integer.toString(integer))
                                     .collect(Collectors.joining(" ")));
@@ -65,6 +65,8 @@ public class Nov2025Level6App {
                                     .collect(Collectors.joining(" ")));
                             outputLines.add("");
                             break;
+                        } else {
+                            System.out.println("Too big time:"+planExecutor.time(pacesX)+", max:"+maxTime);
                         }
                     }
 
@@ -75,9 +77,9 @@ public class Nov2025Level6App {
                     if (!collision) {
                         List<Integer> pacesX = paces.get(0);
                         List<Integer> pacesY = paces.get(1);
-                        System.out.println(pacesX);
-                        System.out.println(pacesY);
                         if (planExecutor.time(pacesX) <= maxTime) {
+                            System.out.println(pacesX);
+                            System.out.println(pacesY);
                             outputLines.add(pacesX.stream()
                                     .map(integer -> Integer.toString(integer))
                                     .collect(Collectors.joining(" ")));

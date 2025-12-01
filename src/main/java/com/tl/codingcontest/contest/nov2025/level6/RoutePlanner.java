@@ -4,7 +4,11 @@ import java.util.List;
 
 public class RoutePlanner {
 
-    final List<Point> directions = List.of(new Point(-1, 0), new Point(1, 0), new Point(0, -1), new Point(0, 1));
+    final List<Point> directions = List.of(new Point(-1, 0), new Point(1, 0), new Point(0, -1), new Point(0, 1),
+            new Point(1, 1),
+            new Point(1, -1),
+            new Point(-1, 1),
+            new Point(-1, -1));
     private final Asteroid asteroid;
     private final int finalX;
     private final int finalY;
@@ -21,8 +25,8 @@ public class RoutePlanner {
         if (planNumber == 0) {
             retVal = List.of(new Point(0, 0), new Point(finalX, finalY));
         } else {
-            int movement = ((planNumber - 1) / 4) + 1;
-            int direction = (planNumber - 1) % 4;
+            int movement = ((planNumber - 1) / 8) + 1;
+            int direction = (planNumber - 1) % 8;
             Point directionPoint = directions.get(direction);
             Point tempPoint = new Point(directionPoint.getX() * movement, directionPoint.getY() * movement);
             retVal = List.of(
