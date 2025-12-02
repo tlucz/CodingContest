@@ -1,19 +1,19 @@
 package com.tl.advent.year2025.day1;
 
-public class Dial {
+class Dial {
 
     private int crossedZeroCount;
     private int currentPosition;
     private final int maxPosition;
 
-    public Dial(int currentPosition, int maxPosition) {
+    Dial(int currentPosition, int maxPosition) {
         this.currentPosition = currentPosition;
         this.maxPosition = maxPosition;
         this.crossedZeroCount = 0;
     }
 
 
-    public int move(String instruction) {
+    int move(String instruction) {
         char direction = instruction.toLowerCase().charAt(0);
         int value = Integer.parseInt(instruction.substring(1));
         if (direction == 'r') {
