@@ -19,8 +19,8 @@ public class Day2MainApp {
             var line = stringIteration.getNext();
             String[] splitByComma = line.split(",");
             long sum = 0;
-            for (int i = 0; i < splitByComma.length; i++) {
-                var splitByDash = splitByComma[i].split("-");
+            for (String s : splitByComma) {
+                var splitByDash = s.split("-");
                 var validator = new IdValidator(Long.parseLong(splitByDash[0]), Long.parseLong(splitByDash[1]));
                 validator.validate();
                 List<Long> wrongIds = validator.getWrongIds();
