@@ -33,6 +33,14 @@ public class Map2D<T> {
         return getValue(point.row(), point.column());
     }
 
+    public int getRows() {
+        return rows;
+    }
+
+    public int getColumns() {
+        return columns;
+    }
+
     public Object[][] getRawMap() {
         return map;
     }
@@ -62,7 +70,7 @@ public class Map2D<T> {
     }
 
     public boolean isPointInside(Point2D point) {
-        return point.row() > 0 && point.row() < rows && point.column() > 0 && point.column() < columns;
+        return point.row() >= 0 && point.row() < rows && point.column() >= 0 && point.column() < columns;
     }
 
     public List<T> getValues(List<Point2D> points) {
