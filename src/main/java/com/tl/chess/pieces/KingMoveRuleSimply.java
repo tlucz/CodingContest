@@ -22,4 +22,9 @@ public class KingMoveRuleSimply implements SimplyPieceMoveRule {
         possibleFields.add(new Field(piece.getCurrentField().line() - 1, piece.getCurrentField().file() + 1));
         return possibleFields.stream().filter(field -> position.getChessboard().isInBoard(field)).toList();
     }
+
+    @Override
+    public boolean isAttacking() {
+        return true;
+    }
 }

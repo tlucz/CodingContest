@@ -82,4 +82,9 @@ public class BishopMoveRuleSimply implements SimplyPieceMoveRule{
 
         return possibleFields;
     }
+
+    @Override
+    public boolean isAttacking() {
+        return true;
+    }
 }

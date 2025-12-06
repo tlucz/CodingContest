@@ -1,6 +1,7 @@
 package com.tl.chess.pieces;
 
 import com.tl.chess.Field;
+import java.util.Arrays;
 
 public class RealPiece implements Cloneable {
 
@@ -57,5 +58,9 @@ public class RealPiece implements Cloneable {
         previousField = currentField;
         currentField = field;
         wasMovedDuringTheGame = true;
+    }
+
+    public void setPieceDefinition(PieceDefinition pieceDefinition) {
+        this.pieceDefinition = pieceDefinition;
     }
 }

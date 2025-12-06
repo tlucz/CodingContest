@@ -57,4 +57,9 @@ public class RookMoveRuleSimply implements SimplyPieceMoveRule {
 
         return possibleFields;
     }
+
+    @Override
+    public boolean isAttacking() {
+        return true;
+    }
 }

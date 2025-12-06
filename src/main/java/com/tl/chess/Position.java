@@ -9,12 +9,14 @@ public class Position implements Cloneable {
 
     Chessboard chessboard;
     List<RealPiece> pieces;
-    List<String> moves = new ArrayList<>();
-    boolean isWhiteTurn = true;
+    List<String> moves;
+    boolean isWhiteTurn;
 
-    public Position(Chessboard chessboard, List<RealPiece> pieces) {
+    public Position(Chessboard chessboard, List<RealPiece> pieces, boolean isWhiteTurn, List<String> moves) {
         this.chessboard = chessboard;
         this.pieces = pieces;
+        this.isWhiteTurn = isWhiteTurn;
+        this.moves = moves;
     }
 
     public Chessboard getChessboard() {
@@ -31,19 +33,19 @@ public class Position implements Cloneable {
 
     @Override
     public Position clone() {
-        return new Position(chessboard, pieces.stream().map(p -> p.clone()).toList());
+        return new Position(chessboard, pieces.stream().map(p -> p.clone()).toList(), isWhiteTurn, new ArrayList<>(moves));
     }
 
     public void removePiece(int id) {
         pieces.stream().filter(p -> p.getId() == id).findAny().ifPresent(p ->
-                moves.add("captured:" + p.getDisplaySign() + p.getCurrentField().toString()));
+                moves.set(moves.size() - 1, moves.getLast().replace("-", "x")));
         pieces = pieces.stream().filter(p -> p.getId() != id).toList();
     }
 
     public void movePiece(int pieceId, Field field) {
         pieces.stream().filter(p -> p.getId() == pieceId).findAny().ifPresent(
                 p -> {
-                    moves.add(p.isWhite() ? "w" : "b" + " " +
+                    moves.add((p.isWhite() ? "w" : "b") + " " +
                             p.getDisplaySign() + p.getCurrentField().toString() + "-" + field.toString());
                     p.moveTo(field);
                 });
@@ -55,5 +57,9 @@ public class Position implements Cloneable {
 
     public void changeTurn() {
         isWhiteTurn = !isWhiteTurn;
+    }
+
+    public List<String> getMoves() {
+        return moves;
     }
 }

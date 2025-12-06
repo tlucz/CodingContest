@@ -2,6 +2,8 @@ package com.tl.chess.engines;
 
 import com.tl.chess.Field;
 import com.tl.chess.Position;
+import com.tl.chess.pieces.PawnPromotionPostProcessingRule;
+import com.tl.chess.pieces.PostProcessingRule;
 import com.tl.chess.pieces.RealPiece;
 import com.tl.chess.pieces.SimplyPieceMoveRule;
 import java.util.ArrayList;
@@ -9,7 +11,10 @@ import java.util.List;
 
 public abstract class AbstractEngine implements Engine {
 
+    private final PostProcessingRule postProcessingRule;
+
     public AbstractEngine() {
+        postProcessingRule = new PawnPromotionPostProcessingRule();
     }
 
     public List<Position> calculateNextPositions(Position position) {
@@ -22,20 +27,56 @@ public abstract class AbstractEngine implements Engine {
                     if (pieceOnField == null) {
                         Position newPosition = position.clone();
                         newPosition.movePiece(piece.getId(), field);
-                        newPosition.changeTurn();
                         nextPositions.add(newPosition);
-                    } else if(pieceOnField.isWhite()!=piece.isWhite() && pieceOnField.getPieceDefinition().canBeCaptured()) {
+                    } else if (pieceOnField.isWhite() != piece.isWhite() && pieceOnField.getPieceDefinition().canBeCaptured()) {
                         Position newPosition = position.clone();
                         newPosition.movePiece(piece.getId(), field);
                         newPosition.removePiece(pieceOnField.getId());
-                        newPosition.changeTurn();
                         nextPositions.add(newPosition);
                     }
                 }
             }
         }
+        nextPositions = nextPositions.stream().flatMap(
+                p -> postProcessingRule.calculatePossibleProcessedPositions(p).stream())
+                .filter(p->!isCheck(p, p.isWhiteTurn()))
+                .toList();
+
+        nextPositions.forEach(p -> p.changeTurn());
+
         return nextPositions;
     }
 
+    @Override
+    public boolean isCheckmate(Position position) {
+        if (isCheck(position, position.isWhiteTurn())) {
+            boolean b = calculateNextPositions(position).stream().allMatch(p -> isCheck(p, !p.isWhiteTurn()));
+            return b;
+        }
+        return false;
+    }
 
+    private boolean isCheck(Position position, boolean whiteKing) {
+        List<Field> attackedFields = getAttackedFields(position, !whiteKing);
+        Field kingField = position.getPieces().stream()
+                .filter(p -> p.isWhite() == whiteKing)
+                .filter(p -> Character.toUpperCase(p.getDisplaySign()) == 'K')
+                .findAny()
+                .map(p -> p.getCurrentField())
+                .orElseThrow();
+        return attackedFields.contains(kingField);
+    }
+
+    private List<Field> getAttackedFields(Position position, boolean isWhite) {
+        List<Field> attackedFields = new ArrayList<>();
+        for (RealPiece piece : position.getPieces().stream().filter(p -> p.isWhite() == isWhite).toList()) {
+            for (SimplyPieceMoveRule simplyPieceMoveRule : piece.getPieceDefinition().getPieceMoveRules()) {
+                if (simplyPieceMoveRule.isAttacking()) {
+                    List<Field> possibleFields = simplyPieceMoveRule.calculateNextPossibleField(piece, position);
+                    attackedFields.addAll(possibleFields);
+                }
+            }
+        }
+        return attackedFields;
+    }
 }

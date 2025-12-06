@@ -19,4 +19,9 @@ public class Pawn1MoveRuleSimply implements SimplyPieceMoveRule {
         }
         return List.of();
     }
+
+    @Override
+    public boolean isAttacking() {
+        return false;
+    }
 }
