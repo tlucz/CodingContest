@@ -6,26 +6,32 @@ import com.tl.chess.display.ConsoleDisplayManager;
 import com.tl.chess.display.DisplayManager;
 import com.tl.chess.engines.Day6Engine;
 import com.tl.chess.engines.Engine;
+import com.tl.chess.pieces.BishopMoveRuleSimply;
+import com.tl.chess.pieces.KingMoveRuleSimply;
 import com.tl.chess.pieces.KnightMoveRuleSimply;
 import com.tl.chess.pieces.Pawn1MoveRuleSimply;
 import com.tl.chess.pieces.Pawn2MoveRuleSimply;
+import com.tl.chess.pieces.PawnTakeMoveRuleSimply;
 import com.tl.chess.pieces.PieceDefinition;
 import com.tl.chess.pieces.RealPiece;
+import com.tl.chess.pieces.RookMoveRuleSimply;
 import java.util.List;
 
 public class MainApp {
 
     public static void main(String[] args) {
         Chessboard chessboard = new StandardChessboard();
-        PieceDefinition rookDefinition = new PieceDefinition('R', List.of());
-        PieceDefinition knightDefinition = new PieceDefinition('N',
+        PieceDefinition rookDefinition = new PieceDefinition('R', true, List.of(new RookMoveRuleSimply()));
+        PieceDefinition knightDefinition = new PieceDefinition('N', true,
                 List.of(new KnightMoveRuleSimply()));
-        PieceDefinition bishopDefinition = new PieceDefinition('B', List.of());
-        PieceDefinition queenDefinition = new PieceDefinition('Q', List.of());
-        PieceDefinition kingDefinition = new PieceDefinition('K', List.of());
-        PieceDefinition pawnDefinition = new PieceDefinition('P', List.of(
+        PieceDefinition bishopDefinition = new PieceDefinition('B', true, List.of(new BishopMoveRuleSimply()));
+        PieceDefinition queenDefinition = new PieceDefinition('Q', true, List.of(new RookMoveRuleSimply(),
+                new BishopMoveRuleSimply()));
+        PieceDefinition kingDefinition = new PieceDefinition('K', false, List.of(new KingMoveRuleSimply()));
+        PieceDefinition pawnDefinition = new PieceDefinition('P', true, List.of(
                 new Pawn1MoveRuleSimply(),
-                new Pawn2MoveRuleSimply()
+                new Pawn2MoveRuleSimply(),
+                new PawnTakeMoveRuleSimply()
         ));
 
         Position initialPosition = new Position(chessboard, List.of(
@@ -68,15 +74,24 @@ public class MainApp {
 
         Engine engine = new Day6Engine();
         List<Position> nextPositions = engine.calculateNextPositions(initialPosition);
-        for(Position position: nextPositions) {
+        for (Position position : nextPositions) {
             displayManager.printPosition(position);
             System.out.println("---------------");
-            List<Position> secondMovePositions = engine.calculateNextPositions(position);
-            for (Position position2: secondMovePositions) {
-                displayManager.printPosition(position2);
-                System.out.println("---------------");
-            }
+//            List<Position> secondMovePositions = engine.calculateNextPositions(position);
+//            for (Position position2 : secondMovePositions) {
+//                displayManager.printPosition(position2);
+//                System.out.println("---------------");
+//            }
         }
     }
 
+    //TODO: en passant
+    //TODO: check
+    //TODO: checkmate
+    //TODO: stalemate
+    //TODO: kings cannot touch
+    //TODO: needs react on check
+    //TODO: castle
+    //TODO: evaluation
+    //TODO: analyze
 }

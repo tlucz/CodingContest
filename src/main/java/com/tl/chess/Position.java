@@ -37,7 +37,7 @@ public class Position implements Cloneable {
     public void removePiece(int id) {
         pieces.stream().filter(p -> p.getId() == id).findAny().ifPresent(p ->
                 moves.add("captured:" + p.getDisplaySign() + p.getCurrentField().toString()));
-        pieces.removeIf(p -> p.getId() == id);
+        pieces = pieces.stream().filter(p -> p.getId() != id).toList();
     }
 
     public void movePiece(int pieceId, Field field) {

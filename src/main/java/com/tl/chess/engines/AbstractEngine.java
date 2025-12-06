@@ -24,7 +24,7 @@ public abstract class AbstractEngine implements Engine {
                         newPosition.movePiece(piece.getId(), field);
                         newPosition.changeTurn();
                         nextPositions.add(newPosition);
-                    } else if(pieceOnField.isWhite()!=piece.isWhite()) {
+                    } else if(pieceOnField.isWhite()!=piece.isWhite() && pieceOnField.getPieceDefinition().canBeCaptured()) {
                         Position newPosition = position.clone();
                         newPosition.movePiece(piece.getId(), field);
                         newPosition.removePiece(pieceOnField.getId());
