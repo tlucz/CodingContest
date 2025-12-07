@@ -1,4 +1,4 @@
-package com.tl.chess.days.year2025day6;
+package com.tl.chess;
 
 import static com.tl.chess.pieces.PieceDefnitionRepository.BISHOP_DEFINITION;
 import static com.tl.chess.pieces.PieceDefnitionRepository.KING_DEFINITION;
@@ -7,15 +7,13 @@ import static com.tl.chess.pieces.PieceDefnitionRepository.PAWN_DEFINITION;
 import static com.tl.chess.pieces.PieceDefnitionRepository.QUEEN_DEFINITION;
 import static com.tl.chess.pieces.PieceDefnitionRepository.ROOK_DEFINITION;
 
-import com.tl.chess.Field;
-import com.tl.chess.Position;
 import com.tl.chess.boards.StandardChessboard;
 import com.tl.chess.pieces.RealPiece;
 import java.util.List;
 
- class PositionRepository {
+ public class PositionRepository {
 
-     static Position POSITION = new Position(new StandardChessboard(), List.of(
+     public static Position START_POSITION = new Position(new StandardChessboard(), List.of(
             new RealPiece(1, true, ROOK_DEFINITION, new Field(0, 0)),
             new RealPiece(2, true, KNIGHT_DEFINITION, new Field(0, 1)),
             new RealPiece(3, true, BISHOP_DEFINITION, new Field(0, 2)),

@@ -1,13 +1,13 @@
 package com.tl.chess.days.year2025day7;
 
 import com.tl.chess.Position;
-import com.tl.chess.PositionFilter;
+import java.util.function.Predicate;
 
-public class Day7PositionFilter implements PositionFilter {
+public class Day7PositionFilter implements Predicate<Position> {
 
     @Override
-    public boolean isPositionOk(Position position) {
-        if(position.getMoves().size() > 4) {
+    public boolean test(Position position) {
+        if (position.getMoves().size() > 4) {
             return false;
         }
         return true;
