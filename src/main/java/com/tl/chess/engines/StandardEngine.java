@@ -37,7 +37,7 @@ public class StandardEngine implements Engine {
                     } else if (pieceOnField.isWhite() != piece.isWhite() && pieceOnField.getPieceDefinition().canBeCaptured()) {
                         Position newPosition = position.clone();
                         newPosition.movePiece(piece.getId(), field);
-                        newPosition.removePiece(pieceOnField.getId());
+                        newPosition.capturePiece(pieceOnField.getId());
                         nextPositions.add(newPosition);
                     }
                 }

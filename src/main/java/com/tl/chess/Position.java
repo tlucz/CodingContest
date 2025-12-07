@@ -4,6 +4,7 @@ import com.tl.chess.boards.Chessboard;
 import com.tl.chess.pieces.RealPiece;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class Position implements Cloneable {
 
@@ -36,10 +37,14 @@ public class Position implements Cloneable {
         return new Position(chessboard, pieces.stream().map(p -> p.clone()).toList(), isWhiteTurn, new ArrayList<>(moves));
     }
 
-    public void removePiece(int id) {
+    public void capturePiece(int id) {
         pieces.stream().filter(p -> p.getId() == id).findAny().ifPresent(p ->
-                moves.set(moves.size() - 1, moves.getLast().replace("-", "x")));
+                enhanceLastMove((String text) -> text.replace("-", "x")));
         pieces = pieces.stream().filter(p -> p.getId() != id).toList();
+    }
+
+    public void enhanceLastMove(Function<String, String> enhancer) {
+        moves.set(moves.size() - 1, enhancer.apply(moves.getLast()));
     }
 
     public void movePiece(int pieceId, Field field) {
