@@ -2,7 +2,6 @@ package com.tl.chess;
 
 import com.tl.chess.common.Position;
 import com.tl.chess.display.ConsoleDisplayManager;
-import com.tl.chess.display.DisplayManager;
 import com.tl.chess.engines.Engine;
 import com.tl.chess.engines.StandardEngine;
 import java.util.Comparator;
@@ -32,7 +31,7 @@ public class ProblemSolver {
         this.shouldPrintBoard = shouldPrintBoard;
     }
 
-    public void solve() {
+    public void solve(boolean shouldAnnotatePosition) {
         displayManager = new ConsoleDisplayManager();
         displayManager.printPosition(initialPosition);
         System.out.println("---------------");
@@ -52,7 +51,7 @@ public class ProblemSolver {
             }
 
             if (positionFilter.test(position)) {
-                positions.addAll(engine.calculateNextPositions(position));
+                positions.addAll(engine.calculateNextPositions(position, shouldAnnotatePosition));
             }
         }
     }
@@ -69,7 +68,7 @@ public class ProblemSolver {
         System.out.println("Solution found:");
         position.getMoves().forEach(System.out::println);
         System.out.println();
-        if(shouldPrintBoard) {
+        if (shouldPrintBoard) {
             displayManager.printPosition(position);
         }
         System.out.println();

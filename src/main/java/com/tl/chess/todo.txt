@@ -1,2 +1,5 @@
-//TODO: check and checkmate sign on moves
+//TODO: 3-move repetitions draw
+//TODO: performance (annotations takes too much time)
+//TODO: change white/black from boolean to enum
+//TODO: store moves not as string
 //TODO: exceptions on move issues

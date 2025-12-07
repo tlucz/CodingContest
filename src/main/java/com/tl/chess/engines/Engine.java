@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface Engine {
 
-    List<Position> calculateNextPositions(Position position);
+    List<Position> calculateNextPositions(Position position, boolean shouldAnnotatePosition);
 
     boolean isCheckmate(Position position);
 

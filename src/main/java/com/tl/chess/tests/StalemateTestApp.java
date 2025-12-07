@@ -10,7 +10,7 @@ import com.tl.chess.engines.StandardEngine;
 import com.tl.chess.pieces.RealPiece;
 import java.util.List;
 
-public class EnPassantTestApp {
+public class StalemateTestApp {
 
     public static void main(String[] args) {
         Engine engine = new StandardEngine();
@@ -33,6 +33,6 @@ public class EnPassantTestApp {
                 position-> position.getMoves().size()<=6,
                 position -> engine.isStalemate(position),
                 false);
-        solver.solve();
+        solver.solve(true);
     }
 }

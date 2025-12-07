@@ -19,6 +19,6 @@ public class MainApp {
                         && position.getMoves().size() == 10 && position.getMoves().getLast().endsWith("N") && engine.isCheckmate(position),
                 true
         );
-        solver.solve();
+        solver.solve(false);
     }
 }

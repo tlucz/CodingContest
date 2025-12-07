@@ -2,11 +2,11 @@ package com.tl.chess.engines;
 
 import com.tl.chess.common.Field;
 import com.tl.chess.common.Position;
+import com.tl.chess.pieces.RealPiece;
 import com.tl.chess.rules.KingLongCastleRule;
 import com.tl.chess.rules.KingShortCastleRule;
 import com.tl.chess.rules.PawnPromotionPostProcessingRule;
 import com.tl.chess.rules.PostProcessingRule;
-import com.tl.chess.pieces.RealPiece;
 import com.tl.chess.rules.piecemove.ComplicatedPieceMoveRule;
 import com.tl.chess.rules.piecemove.SimplyPieceMoveRule;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class StandardEngine implements Engine {
         kingLongCastleRule = new KingLongCastleRule();
     }
 
-    public List<Position> calculateNextPositions(Position position) {
+    public List<Position> calculateNextPositions(Position position, boolean shouldAnnotatePosition) {
         List<Position> nextPositions = new ArrayList<>();
         for (RealPiece piece : position.getPieces().stream().filter(p -> p.isWhite() == position.isWhiteTurn()).toList()) {
             for (SimplyPieceMoveRule simplyPieceMoveRule : piece.getPieceDefinition().getPieceMoveRules()) {
@@ -45,21 +45,33 @@ public class StandardEngine implements Engine {
                     }
                 }
             }
-            for(ComplicatedPieceMoveRule rule: piece.getPieceDefinition().getComplicatedRules()) {
+            for (ComplicatedPieceMoveRule rule : piece.getPieceDefinition().getComplicatedRules()) {
                 nextPositions.addAll(rule.calculateNextPossiblePositions(piece, position));
             }
         }
 
-        kingShortCastleRule.calculateNextPossiblePosition(position, getAttackedFields(position, !position.isWhiteTurn())).ifPresent(nextPositions::add);
-        kingLongCastleRule.calculateNextPossiblePosition(position, getAttackedFields(position, !position.isWhiteTurn())).ifPresent(nextPositions::add);
+        kingShortCastleRule.calculateNextPossiblePosition(position, getAttackedFields(position, !position.isWhiteTurn()))
+                .ifPresent(nextPositions::add);
+        kingLongCastleRule.calculateNextPossiblePosition(position, getAttackedFields(position, !position.isWhiteTurn()))
+                .ifPresent(nextPositions::add);
 
         nextPositions = nextPositions.stream().flatMap(
-                p -> postProcessingRule.calculatePossibleProcessedPositions(p).stream())
-                .filter(p->!isCheck(p, p.isWhiteTurn()))
+                        p -> postProcessingRule.calculatePossibleProcessedPositions(p).stream())
+                .filter(p -> !isCheck(p, p.isWhiteTurn()))
                 .filter(Position::areKingsSeparated)
                 .toList();
-
-        nextPositions.forEach(Position::changeTurn);
+        nextPositions.forEach(p -> {
+            p.changeTurn();
+            if (shouldAnnotatePosition) {
+                if (isCheckmate(p)) {
+                    p.enhanceLastMove(m -> m + "#");
+                } else if (isStalemate(p)) {
+                    p.enhanceLastMove(m -> m + "=");
+                } else if (isCheck(p, p.isWhiteTurn())) {
+                    p.enhanceLastMove(m -> m + "+");
+                }
+            }
+        });
 
         return nextPositions;
     }
@@ -67,7 +79,7 @@ public class StandardEngine implements Engine {
     @Override
     public boolean isCheckmate(Position position) {
         if (isCheck(position, position.isWhiteTurn())) {
-            return calculateNextPositions(position).stream().allMatch(p -> isCheck(p, !p.isWhiteTurn()));
+            return calculateNextPositions(position, false).stream().allMatch(p -> isCheck(p, !p.isWhiteTurn()));
         }
         return false;
     }
@@ -75,7 +87,7 @@ public class StandardEngine implements Engine {
     @Override
     public boolean isStalemate(Position position) {
         if (!isCheck(position, position.isWhiteTurn())) {
-            return calculateNextPositions(position).isEmpty();
+            return calculateNextPositions(position, false).isEmpty();
         }
         return false;
     }
