@@ -1,7 +1,8 @@
-package com.tl.chess.pieces;
+package com.tl.chess.rules;
 
 import com.tl.chess.common.Field;
 import com.tl.chess.common.Position;
+import com.tl.chess.pieces.RealPiece;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,9 +20,9 @@ public class KingShortCastleRule {
         RealPiece rookPiece = position.getPieceOnField(rookField);
         if (freePiece1 == null && freePiece2 == null
                 && kingPiece != null && kingPiece.isWhite() == position.isWhiteTurn() && kingPiece.getUpperSign() == 'K'
-                && !kingPiece.wasMovedDuringTheGame
+                && !kingPiece.wasMovedDuringTheGame()
                 && rookPiece != null && rookPiece.isWhite() == position.isWhiteTurn() && rookPiece.getUpperSign() == 'R'
-                && !rookPiece.wasMovedDuringTheGame
+                && !rookPiece.wasMovedDuringTheGame()
                 && !attackedFields.contains(freeField1)
                 && !attackedFields.contains(freeField2)
                 && !attackedFields.contains(kingField)

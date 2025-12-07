@@ -14,7 +14,8 @@ public class MainApp {
                 PositionRepository.POSITION,
                 new MovesNumberComparator(),
                 new Day7PositionFilter(),
-                position -> !position.isWhiteTurn() && engine.isCheckmate(position));
+                position -> !position.isWhiteTurn() && engine.isCheckmate(position),
+                false);
         solver.solve();
     }
 }

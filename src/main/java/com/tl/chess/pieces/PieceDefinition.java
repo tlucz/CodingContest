@@ -1,6 +1,7 @@
 package com.tl.chess.pieces;
 
 
+import com.tl.chess.rules.piecemove.SimplyPieceMoveRule;
 import java.util.List;
 
 public class PieceDefinition {

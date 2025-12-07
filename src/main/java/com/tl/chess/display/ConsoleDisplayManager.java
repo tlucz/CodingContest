@@ -5,6 +5,10 @@ import com.tl.chess.pieces.RealPiece;
 
 public class ConsoleDisplayManager implements DisplayManager{
 
+    public static void printPositionStatic(Position position) {
+        new ConsoleDisplayManager().printPosition(position);
+    }
+
     @Override
     public void printPosition(Position position) {
         int files = position.getChessboard().getFilesNumber();
@@ -25,5 +29,6 @@ public class ConsoleDisplayManager implements DisplayManager{
             }
             System.out.println();
         }
+        System.out.flush();
     }
 }

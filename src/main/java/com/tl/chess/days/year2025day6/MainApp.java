@@ -1,8 +1,8 @@
 package com.tl.chess.days.year2025day6;
 
+import com.tl.chess.ProblemSolver;
 import com.tl.chess.common.MovesNumberComparator;
 import com.tl.chess.common.PositionRepository;
-import com.tl.chess.ProblemSolver;
 import com.tl.chess.engines.Engine;
 import com.tl.chess.engines.StandardEngine;
 
@@ -16,6 +16,8 @@ public class MainApp {
                 new MovesNumberComparator(),
                 new Day6PositionFilter(),
                 position -> position.isWhiteTurn() && engine.isCheckmate(position)
+                        && position.getMoves().size() == 10 && position.getMoves().getLast().endsWith("N"),
+                true
         );
         solver.solve();
     }

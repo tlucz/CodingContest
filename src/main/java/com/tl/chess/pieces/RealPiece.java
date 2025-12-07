@@ -38,7 +38,7 @@ public class RealPiece implements Cloneable {
         return previousField;
     }
 
-    public boolean isWasMovedDuringTheGame() {
+    public boolean wasMovedDuringTheGame() {
         return wasMovedDuringTheGame;
     }
 

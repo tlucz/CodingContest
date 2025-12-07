@@ -1,5 +1,12 @@
 package com.tl.chess.pieces;
 
+import com.tl.chess.rules.piecemove.BishopMoveRuleSimply;
+import com.tl.chess.rules.piecemove.KingMoveRuleSimply;
+import com.tl.chess.rules.piecemove.KnightMoveRuleSimply;
+import com.tl.chess.rules.piecemove.Pawn1MoveRuleSimply;
+import com.tl.chess.rules.piecemove.Pawn2MoveRuleSimply;
+import com.tl.chess.rules.piecemove.PawnTakeMoveRuleSimply;
+import com.tl.chess.rules.piecemove.RookMoveRuleSimply;
 import java.util.List;
 
 public class PieceDefnitionRepository {

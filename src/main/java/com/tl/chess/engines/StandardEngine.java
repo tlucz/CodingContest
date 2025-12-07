@@ -2,12 +2,12 @@ package com.tl.chess.engines;
 
 import com.tl.chess.common.Field;
 import com.tl.chess.common.Position;
-import com.tl.chess.pieces.KingLongCastleRule;
-import com.tl.chess.pieces.KingShortCastleRule;
-import com.tl.chess.pieces.PawnPromotionPostProcessingRule;
-import com.tl.chess.pieces.PostProcessingRule;
+import com.tl.chess.rules.KingLongCastleRule;
+import com.tl.chess.rules.KingShortCastleRule;
+import com.tl.chess.rules.PawnPromotionPostProcessingRule;
+import com.tl.chess.rules.PostProcessingRule;
 import com.tl.chess.pieces.RealPiece;
-import com.tl.chess.pieces.SimplyPieceMoveRule;
+import com.tl.chess.rules.piecemove.SimplyPieceMoveRule;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,7 +71,7 @@ public class StandardEngine implements Engine {
                 .filter(p -> p.isWhite() == whiteKing)
                 .filter(p -> Character.toUpperCase(p.getDisplaySign()) == 'K')
                 .findAny()
-                .map(p -> p.getCurrentField())
+                .map(RealPiece::getCurrentField)
                 .orElseThrow();
         return attackedFields.contains(kingField);
     }

@@ -15,20 +15,25 @@ public class ProblemSolver {
     private final Comparator<Position> priorityQueueComparator;
     private final Predicate<Position> positionFilter;
     private final Predicate<Position> solutionPredicate;
+    private final boolean shouldPrintBoard;
     private static int processedPositions = 0;
+    private ConsoleDisplayManager displayManager;
 
     public ProblemSolver(
             Position initialPosition,
             Comparator<Position> priorityQueueComparator,
-            Predicate<Position> positionFilter, Predicate<Position> solutionPredicate) {
+            Predicate<Position> positionFilter,
+            Predicate<Position> solutionPredicate,
+            boolean shouldPrintBoard) {
         this.initialPosition = initialPosition;
         this.priorityQueueComparator = priorityQueueComparator;
         this.positionFilter = positionFilter;
         this.solutionPredicate = solutionPredicate;
+        this.shouldPrintBoard = shouldPrintBoard;
     }
 
     public void solve() {
-        DisplayManager displayManager = new ConsoleDisplayManager();
+        displayManager = new ConsoleDisplayManager();
         displayManager.printPosition(initialPosition);
         System.out.println("---------------");
         System.out.println();
@@ -54,15 +59,19 @@ public class ProblemSolver {
 
     private static void displayProgress(PriorityQueue<Position> positions) {
         processedPositions++;
-        if (processedPositions % 25000 == 0) {
+        if (processedPositions % 100_000 == 0) {
             System.out.println(processedPositions + " :" + positions.size());
         }
     }
 
-    private static void printSolution(Position position) {
+    private void printSolution(Position position) {
         System.out.println();
         System.out.println("Solution found:");
         position.getMoves().forEach(System.out::println);
+        System.out.println();
+        if(shouldPrintBoard) {
+            displayManager.printPosition(position);
+        }
         System.out.println();
         System.out.flush();
     }

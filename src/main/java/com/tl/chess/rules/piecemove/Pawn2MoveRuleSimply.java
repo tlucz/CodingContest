@@ -1,7 +1,8 @@
-package com.tl.chess.pieces;
+package com.tl.chess.rules.piecemove;
 
 import com.tl.chess.common.Field;
 import com.tl.chess.common.Position;
+import com.tl.chess.pieces.RealPiece;
 import java.util.List;
 
 public class Pawn2MoveRuleSimply implements SimplyPieceMoveRule {
