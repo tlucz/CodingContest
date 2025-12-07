@@ -2,3 +2,4 @@
 //TODO: en passant
 //TODO: stalemate
 //TODO: position from string
+//TODO: add promotion to move
