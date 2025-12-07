@@ -1,6 +1,6 @@
 package com.tl.chess.display;
 
-import com.tl.chess.Position;
+import com.tl.chess.common.Position;
 import com.tl.chess.pieces.RealPiece;
 
 public class ConsoleDisplayManager implements DisplayManager{

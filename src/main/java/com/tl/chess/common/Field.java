@@ -1,4 +1,4 @@
-package com.tl.chess;
+package com.tl.chess.common;
 
 public record Field(int line, int file) {
 

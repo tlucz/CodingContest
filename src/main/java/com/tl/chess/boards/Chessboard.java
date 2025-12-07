@@ -1,6 +1,6 @@
 package com.tl.chess.boards;
 
-import com.tl.chess.Field;
+import com.tl.chess.common.Field;
 
 public interface Chessboard {
 

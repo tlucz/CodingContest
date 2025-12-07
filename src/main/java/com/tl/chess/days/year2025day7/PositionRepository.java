@@ -2,13 +2,12 @@ package com.tl.chess.days.year2025day7;
 
 import static com.tl.chess.pieces.PieceDefnitionRepository.BISHOP_DEFINITION;
 import static com.tl.chess.pieces.PieceDefnitionRepository.KING_DEFINITION;
-import static com.tl.chess.pieces.PieceDefnitionRepository.KNIGHT_DEFINITION;
 import static com.tl.chess.pieces.PieceDefnitionRepository.PAWN_DEFINITION;
 import static com.tl.chess.pieces.PieceDefnitionRepository.QUEEN_DEFINITION;
 import static com.tl.chess.pieces.PieceDefnitionRepository.ROOK_DEFINITION;
 
-import com.tl.chess.Field;
-import com.tl.chess.Position;
+import com.tl.chess.common.Field;
+import com.tl.chess.common.Position;
 import com.tl.chess.boards.StandardChessboard;
 import com.tl.chess.pieces.RealPiece;
 import java.util.List;

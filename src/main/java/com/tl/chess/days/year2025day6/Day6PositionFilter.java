@@ -1,6 +1,6 @@
 package com.tl.chess.days.year2025day6;
 
-import com.tl.chess.Position;
+import com.tl.chess.common.Position;
 import java.util.function.Predicate;
 
 public class Day6PositionFilter implements Predicate<Position> {

@@ -5,7 +5,7 @@ import static com.tl.chess.pieces.PieceDefnitionRepository.KNIGHT_DEFINITION;
 import static com.tl.chess.pieces.PieceDefnitionRepository.QUEEN_DEFINITION;
 import static com.tl.chess.pieces.PieceDefnitionRepository.ROOK_DEFINITION;
 
-import com.tl.chess.Position;
+import com.tl.chess.common.Position;
 import java.util.List;
 
 public class PawnPromotionPostProcessingRule implements PostProcessingRule {

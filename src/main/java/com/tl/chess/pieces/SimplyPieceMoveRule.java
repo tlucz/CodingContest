@@ -1,7 +1,7 @@
 package com.tl.chess.pieces;
 
-import com.tl.chess.Field;
-import com.tl.chess.Position;
+import com.tl.chess.common.Field;
+import com.tl.chess.common.Position;
 import java.util.List;
 
 public interface SimplyPieceMoveRule {

@@ -1,4 +1,4 @@
-package com.tl.chess;
+package com.tl.chess.common;
 
 import static com.tl.chess.pieces.PieceDefnitionRepository.BISHOP_DEFINITION;
 import static com.tl.chess.pieces.PieceDefnitionRepository.KING_DEFINITION;

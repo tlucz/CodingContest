@@ -1,7 +1,7 @@
 package com.tl.chess.engines;
 
-import com.tl.chess.Field;
-import com.tl.chess.Position;
+import com.tl.chess.common.Field;
+import com.tl.chess.common.Position;
 import com.tl.chess.pieces.KingLongCastleRule;
 import com.tl.chess.pieces.KingShortCastleRule;
 import com.tl.chess.pieces.PawnPromotionPostProcessingRule;

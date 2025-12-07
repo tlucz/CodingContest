@@ -1,7 +1,6 @@
 package com.tl.chess.pieces;
 
-import com.tl.chess.Field;
-import java.util.Arrays;
+import com.tl.chess.common.Field;
 
 public class RealPiece implements Cloneable {
 

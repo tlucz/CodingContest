@@ -1,11 +1,11 @@
 package com.tl.chess;
 
+import com.tl.chess.common.Position;
 import com.tl.chess.display.ConsoleDisplayManager;
 import com.tl.chess.display.DisplayManager;
 import com.tl.chess.engines.Engine;
 import com.tl.chess.engines.StandardEngine;
 import java.util.Comparator;
-import java.util.List;
 import java.util.PriorityQueue;
 import java.util.function.Predicate;
 
@@ -15,6 +15,7 @@ public class ProblemSolver {
     private final Comparator<Position> priorityQueueComparator;
     private final Predicate<Position> positionFilter;
     private final Predicate<Position> solutionPredicate;
+    private static int processedPositions = 0;
 
     public ProblemSolver(
             Position initialPosition,
@@ -35,31 +36,33 @@ public class ProblemSolver {
         PriorityQueue<Position> positions = new PriorityQueue<>(priorityQueueComparator);
         positions.add(initialPosition);
         Engine engine = new StandardEngine();
-        long c = 0;
         while (!positions.isEmpty()) {
-            c++;
-            if (c % 25000 == 0) {
-                System.out.println(c + " :" + positions.size());
-            }
+
+            displayProgress(positions);
+
             Position position = positions.poll();
+
             if (solutionPredicate.test(position)) {
                 printSolution(position);
             }
 
-            List<Position> nextPositions = engine.calculateNextPositions(position);
-
-            for (Position nextPosition : nextPositions) {
-                if (positionFilter.test(nextPosition)) {
-                    positions.add(nextPosition);
-                }
+            if (positionFilter.test(position)) {
+                positions.addAll(engine.calculateNextPositions(position));
             }
+        }
+    }
+
+    private static void displayProgress(PriorityQueue<Position> positions) {
+        processedPositions++;
+        if (processedPositions % 25000 == 0) {
+            System.out.println(processedPositions + " :" + positions.size());
         }
     }
 
     private static void printSolution(Position position) {
         System.out.println();
+        System.out.println("Solution found:");
         position.getMoves().forEach(System.out::println);
-        System.out.println("Solution found!");
         System.out.println();
         System.out.flush();
     }

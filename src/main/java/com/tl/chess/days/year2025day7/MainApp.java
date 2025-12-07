@@ -1,6 +1,6 @@
 package com.tl.chess.days.year2025day7;
 
-import com.tl.chess.MovesNumberComparator;
+import com.tl.chess.common.MovesNumberComparator;
 import com.tl.chess.ProblemSolver;
 import com.tl.chess.engines.Engine;
 import com.tl.chess.engines.StandardEngine;
