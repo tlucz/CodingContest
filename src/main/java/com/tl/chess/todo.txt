@@ -1,1 +1,2 @@
 //TODO: stalemate
+//TODO: exceptions on move issues
