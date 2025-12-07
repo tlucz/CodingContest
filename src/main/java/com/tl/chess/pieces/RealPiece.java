@@ -63,4 +63,8 @@ public class RealPiece implements Cloneable {
     public void setPieceDefinition(PieceDefinition pieceDefinition) {
         this.pieceDefinition = pieceDefinition;
     }
+
+    public char getUpperSign() {
+        return Character.toUpperCase(getDisplaySign());
+    }
 }

@@ -2,6 +2,8 @@ package com.tl.chess.engines;
 
 import com.tl.chess.Field;
 import com.tl.chess.Position;
+import com.tl.chess.pieces.KingLongCastleRule;
+import com.tl.chess.pieces.KingShortCastleRule;
 import com.tl.chess.pieces.PawnPromotionPostProcessingRule;
 import com.tl.chess.pieces.PostProcessingRule;
 import com.tl.chess.pieces.RealPiece;
@@ -9,12 +11,16 @@ import com.tl.chess.pieces.SimplyPieceMoveRule;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractEngine implements Engine {
+public class StandardEngine implements Engine {
 
     private final PostProcessingRule postProcessingRule;
+    private final KingShortCastleRule kingShortCastleRule;
+    private final KingLongCastleRule kingLongCastleRule;
 
-    public AbstractEngine() {
+    public StandardEngine() {
         postProcessingRule = new PawnPromotionPostProcessingRule();
+        kingShortCastleRule = new KingShortCastleRule();
+        kingLongCastleRule = new KingLongCastleRule();
     }
 
     public List<Position> calculateNextPositions(Position position) {
@@ -37,6 +43,9 @@ public abstract class AbstractEngine implements Engine {
                 }
             }
         }
+        kingShortCastleRule.calculateNextPossiblePosition(position, getAttackedFields(position, !position.isWhiteTurn())).ifPresent(nextPositions::add);
+        kingLongCastleRule.calculateNextPossiblePosition(position, getAttackedFields(position, !position.isWhiteTurn())).ifPresent(nextPositions::add);
+
         nextPositions = nextPositions.stream().flatMap(
                 p -> postProcessingRule.calculatePossibleProcessedPositions(p).stream())
                 .filter(p->!isCheck(p, p.isWhiteTurn()))

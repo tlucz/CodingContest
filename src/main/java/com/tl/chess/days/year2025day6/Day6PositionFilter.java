@@ -1,13 +1,16 @@
-package com.tl.chess;
+package com.tl.chess.days.year2025day6;
+
+import com.tl.chess.Position;
+import com.tl.chess.PositionFilter;
 
 public class Day6PositionFilter implements PositionFilter {
 
     @Override
     public boolean isPositionOk(Position position) {
-        if(position.moves.size() > 10) {
+        if(position.getMoves().size() > 10) {
             return false;
         }
-        int blackMoves = (position.moves.size()) / 2;
+        int blackMoves = (position.getMoves().size()) / 2;
         if (blackMoves == 0) {
             return true;
         }

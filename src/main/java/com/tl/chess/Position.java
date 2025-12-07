@@ -62,4 +62,8 @@ public class Position implements Cloneable {
     public List<String> getMoves() {
         return moves;
     }
+
+    public void addMove(String move) {
+        moves.add(move);
+    }
 }
