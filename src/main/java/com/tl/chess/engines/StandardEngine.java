@@ -7,6 +7,7 @@ import com.tl.chess.rules.KingShortCastleRule;
 import com.tl.chess.rules.PawnPromotionPostProcessingRule;
 import com.tl.chess.rules.PostProcessingRule;
 import com.tl.chess.pieces.RealPiece;
+import com.tl.chess.rules.piecemove.ComplicatedPieceMoveRule;
 import com.tl.chess.rules.piecemove.SimplyPieceMoveRule;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -44,14 +45,18 @@ public class StandardEngine implements Engine {
                     }
                 }
             }
+            for(ComplicatedPieceMoveRule rule: piece.getPieceDefinition().getComplicatedRules()) {
+                nextPositions.addAll(rule.calculateNextPossiblePositions(piece, position));
+            }
         }
+
         kingShortCastleRule.calculateNextPossiblePosition(position, getAttackedFields(position, !position.isWhiteTurn())).ifPresent(nextPositions::add);
         kingLongCastleRule.calculateNextPossiblePosition(position, getAttackedFields(position, !position.isWhiteTurn())).ifPresent(nextPositions::add);
 
         nextPositions = nextPositions.stream().flatMap(
                 p -> postProcessingRule.calculatePossibleProcessedPositions(p).stream())
                 .filter(p->!isCheck(p, p.isWhiteTurn()))
-                .filter(p->p.areKingsSeparated())
+                .filter(Position::areKingsSeparated)
                 .toList();
 
         nextPositions.forEach(Position::changeTurn);

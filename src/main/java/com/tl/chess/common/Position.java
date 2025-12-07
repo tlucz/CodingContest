@@ -13,6 +13,7 @@ public class Position implements Cloneable {
     List<RealPiece> pieces;
     List<String> moves;
     boolean isWhiteTurn;
+    private RealPiece lastMovedPiece;
 
     public Position(Chessboard chessboard, List<RealPiece> pieces, boolean isWhiteTurn, List<String> moves) {
         this.chessboard = chessboard;
@@ -54,6 +55,7 @@ public class Position implements Cloneable {
                     moves.add((p.isWhite() ? "w" : "b") + " " +
                             p.getDisplaySign() + p.getCurrentField().toString() + "-" + field.toString());
                     p.moveTo(field);
+                    lastMovedPiece = p;
                 });
     }
 
@@ -79,5 +81,9 @@ public class Position implements Cloneable {
         Field blackKingField = kings.stream().filter(p -> !p.isWhite()).findAny().get().getCurrentField();
         return Math.abs(whiteKingField.line() - blackKingField.line())>=2
                 || Math.abs(whiteKingField.file() - blackKingField.file())>=2;
+    }
+
+    public RealPiece getLastMovedPiece() {
+        return lastMovedPiece;
     }
 }
