@@ -1,2 +1,2 @@
-//TODO: stalemate
+//TODO: check and checkmate sign on moves
 //TODO: exceptions on move issues

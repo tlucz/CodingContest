@@ -67,8 +67,15 @@ public class StandardEngine implements Engine {
     @Override
     public boolean isCheckmate(Position position) {
         if (isCheck(position, position.isWhiteTurn())) {
-            boolean b = calculateNextPositions(position).stream().allMatch(p -> isCheck(p, !p.isWhiteTurn()));
-            return b;
+            return calculateNextPositions(position).stream().allMatch(p -> isCheck(p, !p.isWhiteTurn()));
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isStalemate(Position position) {
+        if (!isCheck(position, position.isWhiteTurn())) {
+            return calculateNextPositions(position).isEmpty();
         }
         return false;
     }

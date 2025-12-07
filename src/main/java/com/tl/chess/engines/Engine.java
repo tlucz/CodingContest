@@ -9,4 +9,6 @@ public interface Engine {
 
     boolean isCheckmate(Position position);
 
+    boolean isStalemate(Position position);
+
 }
