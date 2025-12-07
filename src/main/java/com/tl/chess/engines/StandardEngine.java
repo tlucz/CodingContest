@@ -51,6 +51,7 @@ public class StandardEngine implements Engine {
         nextPositions = nextPositions.stream().flatMap(
                 p -> postProcessingRule.calculatePossibleProcessedPositions(p).stream())
                 .filter(p->!isCheck(p, p.isWhiteTurn()))
+                .filter(p->p.areKingsSeparated())
                 .toList();
 
         nextPositions.forEach(Position::changeTurn);

@@ -1,11 +1,11 @@
 package com.tl.chess.common;
 
-import static com.tl.chess.pieces.PieceDefnitionRepository.BISHOP_DEFINITION;
-import static com.tl.chess.pieces.PieceDefnitionRepository.KING_DEFINITION;
-import static com.tl.chess.pieces.PieceDefnitionRepository.KNIGHT_DEFINITION;
-import static com.tl.chess.pieces.PieceDefnitionRepository.PAWN_DEFINITION;
-import static com.tl.chess.pieces.PieceDefnitionRepository.QUEEN_DEFINITION;
-import static com.tl.chess.pieces.PieceDefnitionRepository.ROOK_DEFINITION;
+import static com.tl.chess.pieces.PieceDefinitionRepository.BISHOP_DEFINITION;
+import static com.tl.chess.pieces.PieceDefinitionRepository.KING_DEFINITION;
+import static com.tl.chess.pieces.PieceDefinitionRepository.KNIGHT_DEFINITION;
+import static com.tl.chess.pieces.PieceDefinitionRepository.PAWN_DEFINITION;
+import static com.tl.chess.pieces.PieceDefinitionRepository.QUEEN_DEFINITION;
+import static com.tl.chess.pieces.PieceDefinitionRepository.ROOK_DEFINITION;
 
 import com.tl.chess.boards.StandardChessboard;
 import com.tl.chess.pieces.RealPiece;

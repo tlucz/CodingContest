@@ -1,9 +1,9 @@
 package com.tl.chess.rules;
 
-import static com.tl.chess.pieces.PieceDefnitionRepository.BISHOP_DEFINITION;
-import static com.tl.chess.pieces.PieceDefnitionRepository.KNIGHT_DEFINITION;
-import static com.tl.chess.pieces.PieceDefnitionRepository.QUEEN_DEFINITION;
-import static com.tl.chess.pieces.PieceDefnitionRepository.ROOK_DEFINITION;
+import static com.tl.chess.pieces.PieceDefinitionRepository.BISHOP_DEFINITION;
+import static com.tl.chess.pieces.PieceDefinitionRepository.KNIGHT_DEFINITION;
+import static com.tl.chess.pieces.PieceDefinitionRepository.QUEEN_DEFINITION;
+import static com.tl.chess.pieces.PieceDefinitionRepository.ROOK_DEFINITION;
 
 import com.tl.chess.common.Position;
 import com.tl.chess.pieces.PieceDefinition;

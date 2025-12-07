@@ -1,6 +1,7 @@
 package com.tl.chess.common;
 
 import com.tl.chess.boards.Chessboard;
+import com.tl.chess.pieces.PieceType;
 import com.tl.chess.pieces.RealPiece;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,5 +71,13 @@ public class Position implements Cloneable {
 
     public void addMove(String move) {
         moves.add(move);
+    }
+
+    public boolean areKingsSeparated() {
+        List<RealPiece> kings = pieces.stream().filter(p -> p.getPieceDefinition().getPieceType() == PieceType.King).toList();
+        Field whiteKingField = kings.stream().filter(p -> p.isWhite()).findAny().get().getCurrentField();
+        Field blackKingField = kings.stream().filter(p -> !p.isWhite()).findAny().get().getCurrentField();
+        return Math.abs(whiteKingField.line() - blackKingField.line())>=2
+                || Math.abs(whiteKingField.file() - blackKingField.file())>=2;
     }
 }
