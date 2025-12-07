@@ -5,10 +5,11 @@ import com.tl.chess.common.Position;
 import com.tl.chess.pieces.RealPiece;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class KingShortCastleRule {
 
-    public Optional<Position> calculateNextPossiblePosition(Position position, List<Field> attackedFields) {
+    public Optional<Position> calculateNextPossiblePosition(Position position, Set<Field> attackedFields) {
         int line = position.isWhiteTurn() ? 0 : 7;
         Field kingField = new Field(line, 4);
         Field rookField = new Field(line, 7);

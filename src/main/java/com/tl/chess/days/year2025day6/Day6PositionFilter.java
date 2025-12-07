@@ -19,6 +19,7 @@ public class Day6PositionFilter implements Predicate<Position> {
             return position.getPieces().stream()
                     .filter(p -> !p.isWhite())
                     .filter(p -> p.getDisplaySign() == 'p')
+                    .filter(p->p.getId()==29)
                     .anyMatch(p -> p.getCurrentField().line() == pawnShouldBeAtLine);
         } else {
             return false;

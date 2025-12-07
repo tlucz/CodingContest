@@ -9,7 +9,9 @@ import com.tl.chess.rules.PostProcessingRule;
 import com.tl.chess.pieces.RealPiece;
 import com.tl.chess.rules.piecemove.SimplyPieceMoveRule;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class StandardEngine implements Engine {
 
@@ -51,7 +53,7 @@ public class StandardEngine implements Engine {
                 .filter(p->!isCheck(p, p.isWhiteTurn()))
                 .toList();
 
-        nextPositions.forEach(p -> p.changeTurn());
+        nextPositions.forEach(Position::changeTurn);
 
         return nextPositions;
     }
@@ -66,7 +68,7 @@ public class StandardEngine implements Engine {
     }
 
     private boolean isCheck(Position position, boolean whiteKing) {
-        List<Field> attackedFields = getAttackedFields(position, !whiteKing);
+        Set<Field> attackedFields = getAttackedFields(position, !whiteKing);
         Field kingField = position.getPieces().stream()
                 .filter(p -> p.isWhite() == whiteKing)
                 .filter(p -> Character.toUpperCase(p.getDisplaySign()) == 'K')
@@ -76,8 +78,8 @@ public class StandardEngine implements Engine {
         return attackedFields.contains(kingField);
     }
 
-    private List<Field> getAttackedFields(Position position, boolean isWhite) {
-        List<Field> attackedFields = new ArrayList<>();
+    private Set<Field> getAttackedFields(Position position, boolean isWhite) {
+        Set<Field> attackedFields = new HashSet<>();
         for (RealPiece piece : position.getPieces().stream().filter(p -> p.isWhite() == isWhite).toList()) {
             for (SimplyPieceMoveRule simplyPieceMoveRule : piece.getPieceDefinition().getPieceMoveRules()) {
                 if (simplyPieceMoveRule.isAttacking()) {

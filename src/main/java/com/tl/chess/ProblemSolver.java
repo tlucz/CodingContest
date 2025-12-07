@@ -59,7 +59,7 @@ public class ProblemSolver {
 
     private static void displayProgress(PriorityQueue<Position> positions) {
         processedPositions++;
-        if (processedPositions % 100_000 == 0) {
+        if (processedPositions % 1_000_000 == 0) {
             System.out.println(processedPositions + " :" + positions.size());
         }
     }

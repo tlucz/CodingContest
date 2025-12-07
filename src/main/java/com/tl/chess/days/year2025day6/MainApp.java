@@ -15,8 +15,8 @@ public class MainApp {
                 PositionRepository.START_POSITION,
                 new MovesNumberComparator(),
                 new Day6PositionFilter(),
-                position -> position.isWhiteTurn() && engine.isCheckmate(position)
-                        && position.getMoves().size() == 10 && position.getMoves().getLast().endsWith("N"),
+                position -> position.isWhiteTurn()
+                        && position.getMoves().size() == 10 && position.getMoves().getLast().endsWith("N") && engine.isCheckmate(position),
                 true
         );
         solver.solve();
