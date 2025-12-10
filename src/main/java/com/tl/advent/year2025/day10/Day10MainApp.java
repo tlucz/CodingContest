@@ -24,9 +24,13 @@ public class Day10MainApp {
                 outputLines.add(line);
                 lines.add(line);
                 Machine machine = new Machine(line);
-                int steps = machine.configure();
-                int steps2 = machine.configurePart2();
-                System.out.println(line + ":" + steps2);
+                int steps = 0;
+//                int steps = machine.configure();
+                System.out.print(line);
+                System.out.flush();
+                int steps2 = machine.configurePart2SecondAttempt();
+                System.out.println(":" + steps2);
+                System.out.flush();
                 sum += steps;
                 sum2 += steps2;
             }
