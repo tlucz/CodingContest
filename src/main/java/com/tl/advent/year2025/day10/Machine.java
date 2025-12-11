@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class Machine {
 
-    private final boolean[] indicatorDesiredState;
+    private final boolean[] part1IndicatorDesiredState;
     private List<List<Integer>> buttonsConfiguration;
     private final int[] desiredJoltage;
     private final String line;
@@ -25,10 +25,10 @@ public class Machine {
         String indicTxt = line.substring(1, closingSquareIdx);
         String switchTxt = line.substring(closingSquareIdx + 2, openingCurly - 1);
         String joltageTxt = line.substring(openingCurly + 1, line.length() - 1);
-        indicatorDesiredState = new boolean[indicTxt.length()];
+        part1IndicatorDesiredState = new boolean[indicTxt.length()];
         for (int i = 0; i < indicTxt.length(); i++) {
             if (indicTxt.charAt(i) == '#') {
-                indicatorDesiredState[i] = true;
+                part1IndicatorDesiredState[i] = true;
             }
         }
 
@@ -44,10 +44,10 @@ public class Machine {
 
     public int configure() {
         PriorityQueue<MachineState> queue = new PriorityQueue<>((o1, o2) -> Integer.compare(o1.pressedButtons, o2.pressedButtons));
-        queue.add(new MachineState(new boolean[indicatorDesiredState.length], 0));
+        queue.add(new MachineState(new boolean[part1IndicatorDesiredState.length], 0));
         MachineState stateToAnalyze;
         while ((stateToAnalyze = queue.poll()) != null) {
-            if (areArraysEqual(stateToAnalyze.indState, indicatorDesiredState)) {
+            if (areArraysEqual(stateToAnalyze.indState, part1IndicatorDesiredState)) {
                 return stateToAnalyze.pressedButtons;
             }
             for (List<Integer> button : buttonsConfiguration) {
@@ -84,14 +84,14 @@ public class Machine {
     private MachineState2 getBestMachineState(int indicator, MachineState2 currentState) {
         int missingValue = desiredJoltage[indicator] - currentState.joltageState[indicator];
         List<Integer> buttonsIndexesForCurrentIndicator = buttonsIndexesForIndicator.get(indicator);
-        List<List<Integer>> buttonsForIndicator = buttonsIndexesForCurrentIndicator.stream().map(idx->buttonsConfiguration.get(idx)).toList();
+        List<List<Integer>> buttonsThatIncreasesIndicator = buttonsIndexesForCurrentIndicator.stream().map(idx->buttonsConfiguration.get(idx)).toList();
         // last indicator
         if (indicator == desiredJoltage.length - 1) {
             if (missingValue == 0) {
                 return currentState;
             } else {
                 // check if there is possibility to set only this indicator
-                if (buttonsForIndicator.stream().anyMatch(l -> l.size() == 1)) {
+                if (buttonsThatIncreasesIndicator.stream().anyMatch(l -> l.size() == 1)) {
                     int[] newState = copyArray(currentState.joltageState);
                     newState[indicator] = newState[indicator] + missingValue;
                     return new MachineState2(newState, currentState.pressedButtons + missingValue);
@@ -105,20 +105,20 @@ public class Machine {
                 return getBestMachineState(indicator + 1, currentState);
             } else {
                 // generate all posibilities to achieve missing value
-                List<int[]> possibilities = generateAllPossibilities(missingValue, buttonsForIndicator.size());
+                List<int[]> clickForButtonPossibilities = generateAllPossibilities(missingValue, buttonsThatIncreasesIndicator.size());
                 //check
                 MachineState2 bestStateSoFar = null;
-                for (int[] possibility : possibilities) {
+                for (int[] clickForButtonsPossibility : clickForButtonPossibilities) {
                     int[] newState = copyArray(currentState.joltageState);
-                    for (int i = 0; i < possibility.length; i++) {
-                        List<Integer> buttonToInvoke = buttonsForIndicator.get(i);
-                        int numberOfClicks = possibility[i];
+                    for (int i = 0; i < clickForButtonsPossibility.length; i++) {
+                        List<Integer> buttonToInvoke = buttonsThatIncreasesIndicator.get(i);
+                        int numberOfClicks = clickForButtonsPossibility[i];
                         for (Integer ind : buttonToInvoke) {
                             newState[ind] += numberOfClicks;
                         }
                     }
                     if (exceeds(newState, desiredJoltage)) {
-                        return null;
+                        continue;
                     }
                     //TODO: to not click the same button next time
                     MachineState2 bestState = getBestMachineState(indicator + 1,
