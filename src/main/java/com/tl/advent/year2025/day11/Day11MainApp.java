@@ -23,8 +23,8 @@ public class Day11MainApp {
                 lines.add(line);
             }
             DevicesGraph devicesGraph = new DevicesGraph(lines);
-            System.out.println("Part1 " + devicesGraph.connectionsAmount("you","out"));
-//            System.out.println("Part2 " + devicesGraph.connectionsAmount("svr","out"));
+//            System.out.println("Part1 " + devicesGraph.connectionsAmount("you","out"));
+            System.out.println("Part2 " + devicesGraph.connectionsAmount("svr","out"));
 
             CodingContestFileHelper.saveOutputFile(inputPath, outputLines);
         }

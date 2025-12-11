@@ -10,7 +10,7 @@ public class DevicesGraph {
 
     private Map<String, Set<String>> connections = new HashMap<>();
 
-//    private Map<Connection,List<List<String>>> possibleConnectionsCache = new HashMap<>();
+    private Map<String, PathsToOutData> pathsProvidesToOutCache = new HashMap<>();
 
     public DevicesGraph(List<String> lines) {
         for (String line : lines) {
@@ -23,38 +23,51 @@ public class DevicesGraph {
     }
 
     public long connectionsAmount(String from, String to) {
-        List<List<String>> currentPaths = new ArrayList<>();
-        List<String> currentPath = List.of(from);
-        currentPaths.add(currentPath);
-        List<List<String>> paths = allPathsTo(to, currentPath);
-        System.out.println("Paths size:" + paths.size());
+        PathsToOutData allPathsToOut = getAllPathsProvidesToOut(from);
 
-        return paths.stream().filter(p -> (p.contains("dac") && p.contains("fft"))).count();
+        System.out.println("All paths:" + allPathsToOut.total());
+        return allPathsToOut.throughBoth;
     }
 
-    private List<List<String>> allPathsTo(String to, List<String> currentPath) {
-        //TODO: implement cache
-        String last = currentPath.getLast();
-        if (last.equals(to)) {
-            return List.of(currentPath);
+    static long counter = 0;
+
+    private PathsToOutData getAllPathsProvidesToOut(String node) {
+        if (pathsProvidesToOutCache.containsKey(node)) {
+            return pathsProvidesToOutCache.get(node);
         } else {
-            Set<String> connections = this.connections.get(last);
-            if (connections == null) {
-                return List.of();
-            }
-            List<List<String>> allPaths = new ArrayList<>();
-            for (String nextNode : connections) {
-                if (!currentPath.contains(nextNode)) {
-                    List<String> newPath = new ArrayList<>(currentPath);
-                    newPath.add(nextNode);
-                    allPaths.addAll(allPathsTo(to, newPath));
+            if (node.equals("out")) {
+                PathsToOutData retVal = new PathsToOutData(1, 0, 0, 0);
+                pathsProvidesToOutCache.put(node, retVal);
+                return retVal;
+            } else {
+                if (connections.get(node) == null) {
+                    PathsToOutData retVal = new PathsToOutData(0, 0, 0, 0);
+                    pathsProvidesToOutCache.put(node, retVal);
+                    return retVal;
                 }
+                PathsToOutData sum = new PathsToOutData(0, 0, 0, 0);
+                for (String nextNode : connections.get(node)) {
+                    PathsToOutData nextNodeData = getAllPathsProvidesToOut(nextNode);
+                    sum = new PathsToOutData(
+                            sum.total + nextNodeData.total,
+                            sum.throughDAC + nextNodeData.throughDAC,
+                            sum.throughFFT + nextNodeData.throughFFT,
+                            sum.throughBoth + nextNodeData.throughBoth);
+                }
+                if (node.equals("dac")) {
+                    sum = new PathsToOutData(sum.total, sum.total, sum.throughFFT, sum.throughFFT);
+                } else if (node.equals("fft")) {
+                    sum = new PathsToOutData(sum.total, sum.throughDAC, sum.total, sum.throughDAC);
+                }
+                this.pathsProvidesToOutCache.put(node, sum);
+                counter++;
+                System.out.println("Cache:" + node + " :" + counter);
+                return sum;
             }
-            return allPaths;
         }
     }
-}
 
-record Connection(String from, String to) {
+    record PathsToOutData(long total, long throughDAC, long throughFFT, long throughBoth) {
 
+    }
 }
