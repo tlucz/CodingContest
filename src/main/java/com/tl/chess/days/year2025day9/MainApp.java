@@ -1,4 +1,4 @@
-package com.tl.chess.days.year2025day9.year2025day7;
+package com.tl.chess.days.year2025day9;
 
 import com.tl.chess.ProblemSolver;
 import com.tl.chess.boards.StandardChessboard;

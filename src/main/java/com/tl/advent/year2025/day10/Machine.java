@@ -67,8 +67,90 @@ public class Machine {
         MachineState2 initialMachineState = new MachineState2(new int[desiredJoltage.length], 0);
 
         // maybe sort indicators
-        MachineState2 bestState = getBestMachineState(0, initialMachineState);
+        MachineState2 bestState = getBestMachineState(initialMachineState);
         return bestState.pressedButtons;
+    }
+
+    private MachineState2 getBestMachineState(MachineState2 currentState) {
+        if (areArraysEqual(currentState.joltageState, desiredJoltage)) {
+            return currentState;
+        }
+        if (exceeds(currentState.joltageState, desiredJoltage)) {
+            return null;
+        }
+
+        int[] joltageDiffs = calculateDiff(desiredJoltage, currentState.joltageState);
+        int indicatorToAdjustIdx = findLowestPositiveValueIndex(joltageDiffs);
+//        int indicatorToAdjustIdx = findHighestPositiveValueIndex(joltageDiffs);
+        int missingValue = joltageDiffs[indicatorToAdjustIdx];
+
+        List<Integer> buttonsIndexesForIndicatorToAdjust = buttonsIndexesForIndicator.get(indicatorToAdjustIdx);
+        List<List<Integer>> buttonsThatIncreasesIndicator = buttonsIndexesForIndicatorToAdjust
+                .stream().map(idx -> buttonsConfiguration.get(idx))
+                .toList();
+        // generate all posibilities to achieve missing value
+        // limit it to not add buttons that would exceeds desired joltage for indicator
+        List<Integer> maxClicksForButton = calculateMaxPossibleClicksForButton(currentState, buttonsThatIncreasesIndicator);
+        if(maxClicksForButton.stream().allMatch(i->i==0)) {
+            return null;
+        }
+        // reduce amount of the possibilities by eminating not possible button and also adjust maxClicks for button inside the method dynamically
+        List<int[]> clickForButtonPossibilities = generateAllPossibilities2(missingValue, maxClicksForButton);
+
+        MachineState2 bestStateSoFar = null;
+        for (int[] clickForButtonsPossibility : clickForButtonPossibilities) {
+            int[] newState = copyArray(currentState.joltageState);
+            for (int i = 0; i < clickForButtonsPossibility.length; i++) {
+                List<Integer> buttonToInvoke = buttonsThatIncreasesIndicator.get(i);
+                int numberOfClicks = clickForButtonsPossibility[i];
+                for (Integer ind : buttonToInvoke) {
+                    newState[ind] += numberOfClicks;
+                }
+            }
+            if (exceeds(newState, desiredJoltage)) {
+                continue;
+            }
+            //TODO: to not click the same button next time
+            MachineState2 bestState = getBestMachineState(new MachineState2(newState, currentState.pressedButtons + missingValue));
+            if (bestState != null) {
+                if (bestStateSoFar == null || bestStateSoFar.pressedButtons > bestState.pressedButtons) {
+                    bestStateSoFar = bestState;
+                }
+            }
+        }
+        return bestStateSoFar;
+    }
+
+    private List<Integer> calculateMaxPossibleClicksForButton(MachineState2 currentState, List<List<Integer>> buttonsThatIncreasesIndicator) {
+        List<Integer> maxClicks = new ArrayList<>();
+        for (List<Integer> button : buttonsThatIncreasesIndicator) {
+            maxClicks.add(button.stream().mapToInt(ind -> desiredJoltage[ind] - currentState.joltageState[ind]).min().getAsInt());
+        }
+        return maxClicks;
+    }
+
+    private int findLowestPositiveValueIndex(int[] joltageDiffs) {
+        int bestIdx = -1;
+        int bestValue = Integer.MAX_VALUE;
+        for (int i = 0; i < joltageDiffs.length; i++) {
+            if (joltageDiffs[i] > 0 && joltageDiffs[i] < bestValue) {
+                bestIdx = i;
+                bestValue = joltageDiffs[i];
+            }
+        }
+        return bestIdx;
+    }
+
+    private int findHighestPositiveValueIndex(int[] joltageDiffs) {
+        int bestIdx = -1;
+        int bestValue = Integer.MIN_VALUE;
+        for (int i = 0; i < joltageDiffs.length; i++) {
+            if (joltageDiffs[i] > 0 && joltageDiffs[i] > bestValue) {
+                bestIdx = i;
+                bestValue = joltageDiffs[i];
+            }
+        }
+        return bestIdx;
     }
 
     private List<Integer> findButtonsIndexesForIndicator(int indicator) {
@@ -81,59 +163,6 @@ public class Machine {
         return result;
     }
 
-    private MachineState2 getBestMachineState(int indicator, MachineState2 currentState) {
-        int missingValue = desiredJoltage[indicator] - currentState.joltageState[indicator];
-        List<Integer> buttonsIndexesForCurrentIndicator = buttonsIndexesForIndicator.get(indicator);
-        List<List<Integer>> buttonsThatIncreasesIndicator = buttonsIndexesForCurrentIndicator.stream().map(idx->buttonsConfiguration.get(idx)).toList();
-        // last indicator
-        if (indicator == desiredJoltage.length - 1) {
-            if (missingValue == 0) {
-                return currentState;
-            } else {
-                // check if there is possibility to set only this indicator
-                if (buttonsThatIncreasesIndicator.stream().anyMatch(l -> l.size() == 1)) {
-                    int[] newState = copyArray(currentState.joltageState);
-                    newState[indicator] = newState[indicator] + missingValue;
-                    return new MachineState2(newState, currentState.pressedButtons + missingValue);
-                } else {
-                    return null;
-                }
-            }
-        } else {
-            // not last indicator
-            if (missingValue == 0) {
-                return getBestMachineState(indicator + 1, currentState);
-            } else {
-                // generate all posibilities to achieve missing value
-                List<int[]> clickForButtonPossibilities = generateAllPossibilities(missingValue, buttonsThatIncreasesIndicator.size());
-                //check
-                MachineState2 bestStateSoFar = null;
-                for (int[] clickForButtonsPossibility : clickForButtonPossibilities) {
-                    int[] newState = copyArray(currentState.joltageState);
-                    for (int i = 0; i < clickForButtonsPossibility.length; i++) {
-                        List<Integer> buttonToInvoke = buttonsThatIncreasesIndicator.get(i);
-                        int numberOfClicks = clickForButtonsPossibility[i];
-                        for (Integer ind : buttonToInvoke) {
-                            newState[ind] += numberOfClicks;
-                        }
-                    }
-                    if (exceeds(newState, desiredJoltage)) {
-                        continue;
-                    }
-                    //TODO: to not click the same button next time
-                    MachineState2 bestState = getBestMachineState(indicator + 1,
-                            new MachineState2(newState, currentState.pressedButtons + missingValue));
-                    if (bestState != null) {
-                        if (bestStateSoFar == null || bestStateSoFar.pressedButtons > bestState.pressedButtons) {
-                            bestStateSoFar = bestState;
-                        }
-                    }
-                }
-                return bestStateSoFar;
-            }
-        }
-    }
-
     private List<int[]> generateAllPossibilities(int value, int arraySize) {
         if (arraySize == 1) {
             return List.of(new int[]{value});
@@ -143,6 +172,27 @@ public class Machine {
                 List<int[]> subpossibilities = generateAllPossibilities(value - i, arraySize - 1);
                 for (int[] subpossibility : subpossibilities) {
                     int[] newPossibility = new int[arraySize];
+                    newPossibility[0] = i;
+                    System.arraycopy(subpossibility, 0, newPossibility, 1, subpossibility.length);
+                    possibilities.add(newPossibility);
+                }
+            }
+            return possibilities;
+        }
+    }
+
+    private List<int[]> generateAllPossibilities2(int totalValue, List<Integer> maxClicksForButton) {
+        if (maxClicksForButton.stream().mapToInt(v -> v).sum() < totalValue) {
+            return List.of();
+        }
+        if (maxClicksForButton.size() == 1) {
+            return List.of(new int[]{Math.min(maxClicksForButton.getFirst(), totalValue)});
+        } else {
+            List<int[]> possibilities = new ArrayList<>();
+            for (int i = 0; i <= Math.min(maxClicksForButton.getFirst(), totalValue); i++) {
+                List<int[]> subpossibilities = generateAllPossibilities2(totalValue - i, maxClicksForButton.subList(1, maxClicksForButton.size()));
+                for (int[] subpossibility : subpossibilities) {
+                    int[] newPossibility = new int[maxClicksForButton.size()];
                     newPossibility[0] = i;
                     System.arraycopy(subpossibility, 0, newPossibility, 1, subpossibility.length);
                     possibilities.add(newPossibility);
@@ -199,16 +249,6 @@ public class Machine {
             }
         }
         return bestStateSoFar;
-    }
-
-    private int minFromArray(int[] a) {
-        int min = Integer.MAX_VALUE;
-        for (int j : a) {
-            if (j < min) {
-                min = j;
-            }
-        }
-        return min;
     }
 
     private int[] calculateDiff(int[] desiredJoltage, int[] joltageState) {
