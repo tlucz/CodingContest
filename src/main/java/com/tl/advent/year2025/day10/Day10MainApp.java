@@ -28,7 +28,7 @@ public class Day10MainApp {
 //                int steps = machine.configure();
                 System.out.print(line);
                 System.out.flush();
-                int steps2 = machine.configurePart2SecondAttempt();
+                int steps2 = machine.configurePart2OrTools();
                 System.out.println(":" + steps2);
                 System.out.flush();
                 sum += steps;

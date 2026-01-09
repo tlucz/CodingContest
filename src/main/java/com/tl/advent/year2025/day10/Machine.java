@@ -1,5 +1,11 @@
 package com.tl.advent.year2025.day10;
 
+import com.google.ortools.Loader;
+import com.google.ortools.sat.CpModel;
+import com.google.ortools.sat.CpSolver;
+import com.google.ortools.sat.CpSolverStatus;
+import com.google.ortools.sat.IntVar;
+import com.google.ortools.sat.LinearExpr;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -57,6 +63,46 @@ public class Machine {
             }
         }
         throw new RuntimeException("not found");
+    }
+
+    public int configurePart2OrTools() {
+        Loader.loadNativeLibraries();
+        CpModel model = new CpModel();
+        IntVar[] b = new IntVar[buttonsConfiguration.size()];
+        for (int i = 0; i < buttonsConfiguration.size(); i++) {
+            b[i]=model.newIntVar(0,10_000,"b"+i);
+        }
+
+        for (int i = 0; i < desiredJoltage.length; i++) {
+            List<IntVar> vars = new ArrayList<>();
+            List<Long> coeffs = new ArrayList<>();
+            for (int j = 0; j < buttonsConfiguration.size(); j++) {
+                if(buttonsConfiguration.get(j).contains(i)) {
+                    vars.add(b[j]);
+                    coeffs.add(1L);
+                }
+            }
+            IntVar[] varsArr = vars.toArray(new IntVar[0]);
+            long[] coeffsArr = coeffs.stream().mapToLong(Long::longValue).toArray();
+            model.addEquality(LinearExpr.weightedSum(varsArr,coeffsArr), desiredJoltage[i]);
+        }
+        model.minimize(LinearExpr.sum(b));
+
+
+
+
+        CpSolver solver = new CpSolver();
+        solver.getParameters().setMaxTimeInSeconds(90.0);
+        CpSolverStatus status = solver.solve(model);
+        if (status == CpSolverStatus.OPTIMAL || status == CpSolverStatus.FEASIBLE) {
+            System.out.println("Solution:");
+            for (int i = 0; i < buttonsConfiguration.size(); i++) {
+                System.out.printf("b%d = %d%n", i, solver.value(b[i]));
+            }
+        } else {
+            System.out.println("No solution found.");
+        }
+        return (int)solver.objectiveValue();
     }
 
     public int configurePart2SecondAttempt() {
@@ -186,10 +232,10 @@ public class Machine {
             return List.of();
         }
         if (maxClicksForButton.size() == 1) {
-            return List.of(new int[]{Math.min(maxClicksForButton.getFirst(), totalValue)});
+            return List.of(new int[]{Math.min(maxClicksForButton.get(0), totalValue)});
         } else {
             List<int[]> possibilities = new ArrayList<>();
-            for (int i = 0; i <= Math.min(maxClicksForButton.getFirst(), totalValue); i++) {
+            for (int i = 0; i <= Math.min(maxClicksForButton.get(0), totalValue); i++) {
                 List<int[]> subpossibilities = generateAllPossibilities2(totalValue - i, maxClicksForButton.subList(1, maxClicksForButton.size()));
                 for (int[] subpossibility : subpossibilities) {
                     int[] newPossibility = new int[maxClicksForButton.size()];
